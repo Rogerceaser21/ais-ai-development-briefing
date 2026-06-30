@@ -213,7 +213,7 @@ body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(
 <body>
 <div class="pbar"><div class="pfill" id="pfill"></div></div>
 <nav class="dots" id="dots" aria-label="Slides"></nav>
-<div class="counter" id="counter">1 / 14</div>
+<div class="counter" id="counter">1 / 15</div>
 <canvas id="cur" aria-hidden="true"></canvas>
 <div class="fsx" id="fsx"><button id="fsd" title="Smaller">A−</button><span id="fsl">100%</span><button id="fsu" title="Larger">A+</button><span class="dv"></span><button id="fsf" class="fb" title="Fullscreen">⛶</button><span class="dv"></span><button id="pv" class="fb" aria-label="Previous slide" title="Previous (←)" style="font-size:1.25em;line-height:1">‹</button><button id="nx" class="fb" aria-label="Next slide" title="Next (→)" style="font-size:1.25em;line-height:1">›</button></div>
 <div class="ehz" aria-hidden="true"></div><button class="etg" id="etg" title="Edit (E)">✎</button><div class="eban" id="eban">Edit mode · click text, ⌘S to save</div>
@@ -244,6 +244,32 @@ body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(
       <div class="ov reveal d5"><span class="n">05</span><h3>Lesson and Slide AI</h3><p>Turning our teaching craft into ready-to-teach lessons.</p></div>
     </div>
     <p class="body reveal d6" style="margin-top:1.2rem">Built this year. Shared infrastructure. <strong>Tracked against clear KPIs.</strong></p>
+  </section>
+
+  <!-- R3 OBSERVATION FORM (demo) — where it starts -->
+  <section class="slide demo" data-slide="2b">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">01</span>R3 Observations</span>
+      <h2 class="demo-ti">The R3 Observation Form. <em>Where it all starts.</em></h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">Observers make observations</span></li>
+        <li><span class="box"></span><span class="it">Make a judgement</span></li>
+        <li><span class="box"></span><span class="it">Write notes</span></li>
+        <li><span class="box"></span><span class="it">All in one handy place</span></li>
+        <li><span class="box"></span><span class="it">The data is collated in three places
+          <ul class="subchk">
+            <li>Emailed to the person who observed the lesson</li>
+            <li>Saved in Supabase (database)</li>
+            <li>Saved in Google Sheets as a backup</li>
+          </ul></span></li>
+      </ul>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://rogerceaser21.github.io/Data-Representation/Assets/R3/r3-evidence-form.html" title="Live R3 Observation form" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live form · <b>unlocked during the demo</b></div>
+    </div>
   </section>
 
   <!-- 3 R3 (demo) -->
@@ -284,7 +310,7 @@ body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(
     <div class="rule reveal d3"></div>
     <div class="two">
       <ul class="next-list">
-        <li class="reveal d3">Teacher Dashboard<span>The 8-point per-teacher view (possible before tomorrow)</span></li>
+        <li class="reveal d3"><a href="https://rogerceaser21.github.io/Data-Representation/dashboard-previews/spea-dashboard.html" target="_blank" rel="noopener" style="color:var(--gold-deep);text-decoration:none">Teacher Dashboard/Portal ↗</a><span>The 8-point per-teacher view (possible before tomorrow)</span></li>
         <li class="reveal d3">OTP and APR lesson observations</li>
         <li class="reveal d4">Apple Pencil notes used as AI context</li>
         <li class="reveal d4">Role-based logins: teacher, observer, administrator</li>
