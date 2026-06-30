@@ -215,7 +215,7 @@ body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(
 <nav class="dots" id="dots" aria-label="Slides"></nav>
 <div class="counter" id="counter">1 / 14</div>
 <canvas id="cur" aria-hidden="true"></canvas>
-<div class="fsx" id="fsx"><button id="fsd" title="Smaller">A−</button><span id="fsl">100%</span><button id="fsu" title="Larger">A+</button><span class="dv"></span><button id="fsf" class="fb" title="Fullscreen">⛶</button></div>
+<div class="fsx" id="fsx"><button id="fsd" title="Smaller">A−</button><span id="fsl">100%</span><button id="fsu" title="Larger">A+</button><span class="dv"></span><button id="fsf" class="fb" title="Fullscreen">⛶</button><span class="dv"></span><button id="pv" class="fb" aria-label="Previous slide" title="Previous (←)" style="font-size:1.25em;line-height:1">‹</button><button id="nx" class="fb" aria-label="Next slide" title="Next (→)" style="font-size:1.25em;line-height:1">›</button></div>
 <div class="ehz" aria-hidden="true"></div><button class="etg" id="etg" title="Edit (E)">✎</button><div class="eban" id="eban">Edit mode · click text, ⌘S to save</div>
 
 <div class="slides-container" id="sc">
@@ -497,7 +497,7 @@ class Deck{
   go(i){if(i<0||i>=this.n||i===this.i)return;this.s[this.i].classList.remove('active');this.i=i;this.s[this.i].classList.add('active');this.update();}
   next(){this.go(this.i+1)}prev(){this.go(this.i-1)}
   update(){this.pf.style.width=((this.i+1)/this.n*100)+'%';this.ct.textContent=(this.i+1)+' / '+this.n;
-    Array.from(this.dots.children).forEach((d,i)=>d.classList.toggle('active',i===this.i));document.body.classList.toggle('on-embed',this.s[this.i].classList.contains('embed-deck'));this.reload();}
+    Array.from(this.dots.children).forEach((d,i)=>d.classList.toggle('active',i===this.i));document.body.classList.toggle('on-embed',this.s[this.i].classList.contains('demo'));this.reload();}
   reload(){if(this.first){this.first=false;return;}const a=this.s[this.i];a.querySelectorAll('iframe[data-reload-on-show="true"]').forEach(f=>{const s=f.getAttribute('src');f.setAttribute('src','about:blank');requestAnimationFrame(()=>f.setAttribute('src',s));});}
   keys(){const N=['ArrowRight','ArrowDown','PageDown',' '],P=['ArrowLeft','ArrowUp','PageUp'];
     document.addEventListener('keydown',e=>{if(e.target.isContentEditable||['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName))return;
@@ -539,6 +539,8 @@ class Editor{constructor(){this.on=false;this.tg=document.getElementById('etg');
 
 new FS();new Full();new Cursor();new Editor();
 const deck=new Deck();
+document.getElementById('pv').onclick=()=>deck.prev();
+document.getElementById('nx').onclick=()=>deck.next();
 document.querySelectorAll('.chk li').forEach(li=>li.addEventListener('click',e=>{e.stopPropagation();li.classList.toggle('done');}));
 function jump(){const k=parseInt((location.hash||'').replace('#',''),10);if(k>=1&&k<=deck.n)deck.go(k-1);}jump();window.addEventListener('hashchange',jump);
 </script>
