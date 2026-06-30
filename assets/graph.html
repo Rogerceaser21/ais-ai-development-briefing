@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIS Systems — Interconnected</title>
+<style>
+  html,body{margin:0;height:100%;background:#ffffff;font-family:'Inter',system-ui,-apple-system,sans-serif;overflow:hidden}
+  #net{width:100%;height:100%}
+  .legend{position:absolute;left:18px;bottom:16px;display:flex;gap:18px;font-size:13px;color:#55617a;background:rgba(255,255,255,.85);padding:8px 14px;border:1px solid #e3e6ee;border-radius:10px}
+  .legend b{font-weight:700;color:#14233f}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+  .hint{position:absolute;right:18px;top:14px;font-size:12px;color:#9aa3b5}
+</style>
+</head>
+<body>
+<div id="net"></div>
+<div class="legend">
+  <span><span class="sw" style="background:#14233f"></span><b>Systems I built</b></span>
+  <span><span class="sw" style="background:#b8902f"></span><b>Shared foundations</b></span>
+</div>
+<div class="hint">Drag to explore · scroll to zoom</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/standalone/umd/vis-network.min.js"></script>
+<script>
+  var SYS = "#14233f", INF = "#b8902f";
+  var nodes = new vis.DataSet([
+    {id:'r3',    label:'R3 Observations\n& Dashboard', group:'sys'},
+    {id:'acad',  label:'Academic\nReports', group:'sys'},
+    {id:'trs',   label:'IRL / TRS\nAutomation', group:'sys'},
+    {id:'fb',    label:'Feedback\nApp', group:'sys'},
+    {id:'att',   label:'Attendance\nApp', group:'sys'},
+    {id:'lesson',label:'Lesson &\nSlide AI', group:'sys'},
+    {id:'focus', label:'Focus OS', group:'sys'},
+    {id:'supa',  label:'Supabase', group:'inf'},
+    {id:'gws',   label:'Google\nWorkspace', group:'inf'},
+    {id:'ai',    label:'AI\n(Gemini · Claude)', group:'inf'},
+    {id:'pages', label:'GitHub\nPages', group:'inf'}
+  ]);
+  var E = function(f,t,gold){return {from:f,to:t,color:{color:gold?'#cdb06a':'#d4d8e2',highlight:'#b8902f'},width:gold?2.4:1.6,dashes:!!gold};};
+  var edges = new vis.DataSet([
+    E('r3','supa'),E('r3','gws'),E('r3','pages'),E('r3','ai'),
+    E('acad','pages'),E('acad','gws'),E('acad','supa'),
+    E('trs','gws'),E('trs','ai'),
+    E('fb','supa'),E('fb','ai'),E('fb','gws'),
+    E('att','supa'),E('att','ai'),E('att','gws'),
+    E('lesson','ai'),E('lesson','pages'),E('lesson','gws'),
+    E('focus','supa'),E('focus','ai'),
+    E('att','r3',true),E('fb','acad',true),E('lesson','r3',true)
+  ]);
+  var net = new vis.Network(document.getElementById('net'), {nodes:nodes, edges:edges}, {
+    nodes:{shape:'dot', font:{color:'#14233f', size:17, face:'Inter', multi:false, bold:{color:'#14233f'}}, borderWidth:0},
+    groups:{
+      sys:{color:{background:SYS, border:SYS, highlight:{background:'#1d3358',border:SYS}}, size:30, font:{color:'#14233f', size:18, vadjust:6}},
+      inf:{color:{background:INF, border:INF, highlight:{background:'#cfa84a',border:INF}}, size:18, font:{color:'#7a5e16', size:14}}
+    },
+    edges:{smooth:{type:'continuous'}, selectionWidth:2},
+    physics:{barnesHut:{gravitationalConstant:-9000, springLength:160, springConstant:0.05, avoidOverlap:0.4}, stabilization:{iterations:300}},
+    interaction:{hover:true, dragNodes:true, zoomView:true, dragView:true, tooltipDelay:120}
+  });
+  net.once('stabilizationIterationsDone', function(){ net.setOptions({physics:false}); net.fit({animation:{duration:600}}); });
+  net.on('selectNode', function(p){ net.focus(p.nodes[0], {scale:1.25, animation:{duration:500}}); });
+</script>
+</body>
+</html>

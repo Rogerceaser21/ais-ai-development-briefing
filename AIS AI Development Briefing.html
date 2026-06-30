@@ -3,1021 +3,518 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIS · AI &amp; Development · Executive Briefing</title>
-
-<!-- Fonts: Manrope -->
+<title>AIS · AI and Development · Executive Briefing</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ============================================================
-   THEME — AIS (navy + AIS blue "Blue on Star", yellow accent)
-   ============================================================ */
-:root {
-  --bg-dark:   #14233f;   /* AIS navy stage */
-  --bg-darker: #0c1830;
-  --bg-white:  #ffffff;
-  --bg-soft:   #eef1f6;
-  --accent:    #1257ff;   /* AIS blue */
-  --accent-deep: #0a35b8;
-  --accent-rgb: 18, 87, 255;
-  --gold:      #ffba14;   /* AIS yellow */
-  --text-dark: #14233f;
-  --text-mute: #55617a;
-  --text-soft: #8a93a8;
-  --text-light: #ffffff;
-
-  --font-display: 'Manrope', sans-serif;
-
-  --font-scale: 1;
-  --title-size:  calc(clamp(2.4rem, 7.5vw, 5.4rem) * var(--font-scale));
-  --h2-size:     calc(clamp(1.4rem, 3.6vw, 2.7rem)  * var(--font-scale));
-  --h3-size:     calc(clamp(1.05rem, 2.2vw, 1.55rem) * var(--font-scale));
-  --body-size:   calc(clamp(0.9rem, 1.5vw, 1.12rem) * var(--font-scale));
-  --small-size:  calc(clamp(0.75rem, 1.1vw, 0.9rem) * var(--font-scale));
-  --label-size:  calc(clamp(0.65rem, 0.95vw, 0.8rem) * var(--font-scale));
-
-  --slide-padding: clamp(1.2rem, 3vw, 2.5rem);
-  --gap:           clamp(1rem, 2vw, 2rem);
-  --gap-sm:        clamp(0.5rem, 1.2vw, 1rem);
-
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --duration:      0.65s;
+:root{
+  --ink:#14233f; --ink-soft:#3a4a66; --mute:#6b7790; --faint:#9aa3b5;
+  --gold:#b8902f; --gold-soft:#cdb06a; --gold-deep:#8a6a18;
+  --bg:#ffffff; --soft:#f5f6f8; --line:#e6e9f0; --line-soft:#eef0f5;
+  --navy-panel:#0c1830;
+  --serif:'Lora',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --fs:1;
+  --t1: calc(clamp(2.6rem,6vw,5rem) * var(--fs));
+  --t2: calc(clamp(1.5rem,3.4vw,2.7rem) * var(--fs));
+  --h3: calc(clamp(1.05rem,2vw,1.5rem) * var(--fs));
+  --body: calc(clamp(.92rem,1.4vw,1.12rem) * var(--fs));
+  --sm: calc(clamp(.78rem,1.1vw,.92rem) * var(--fs));
+  --lab: calc(clamp(.66rem,.9vw,.8rem) * var(--fs));
+  --ease:cubic-bezier(.16,1,.3,1); --dur:.6s;
 }
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow-x:hidden}
+body{background:var(--soft);color:var(--ink);font-family:var(--sans);font-weight:400;overflow:hidden}
+.slides-container{position:relative;width:100vw;height:100vh;height:100dvh}
+.slide{position:absolute;inset:0;width:100vw;height:100vh;height:100dvh;overflow:hidden;opacity:0;transform:translateY(18px);pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.slide.active{opacity:1;transform:translateY(0);pointer-events:auto;z-index:1}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.2s!important}}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; overflow-x: hidden; }
-body {
-  background: var(--bg-soft);
-  color: var(--text-dark);
-  font-family: var(--font-display);
-  font-weight: 400;
-  overflow: hidden;
-}
+.ais-logo{position:absolute;top:clamp(.9rem,2vh,1.6rem);right:clamp(1rem,2vw,1.8rem);height:clamp(30px,4.4vh,50px);z-index:5}
 
-.slides-container { position: relative; width: 100vw; height: 100vh; height: 100dvh; }
-.slide {
-  position: absolute; inset: 0;
-  width: 100vw; height: 100vh; height: 100dvh;
-  overflow: hidden;
-  opacity: 0; transform: translateY(20px); pointer-events: none;
-  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
-}
-.slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; z-index: 1; }
+.reveal{opacity:0;transform:translateY(24px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.slide.active .reveal{opacity:1;transform:translateY(0)}
+.reveal-l{opacity:0;transform:translateX(-22px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.slide.active .reveal-l{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.05s}.d2{transition-delay:.16s}.d3{transition-delay:.28s}.d4{transition-delay:.4s}.d5{transition-delay:.52s}.d6{transition-delay:.64s}
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
-}
+/* shared content slide */
+.content{background:var(--bg);padding:clamp(2rem,5vh,3.6rem) clamp(2.4rem,6vw,5rem);display:flex;flex-direction:column}
+.ey{font-family:var(--sans);font-weight:700;font-size:var(--sm);letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep)}
+.ey .n{color:var(--faint);margin-right:.7em}
+.ti{font-family:var(--serif);font-weight:600;font-size:var(--t2);line-height:1.08;letter-spacing:-.01em;color:var(--ink);margin:.32em 0 .28em;max-width:22ch}
+.ti em{font-style:italic;color:var(--gold)}
+.rule{width:92px;height:3px;background:var(--gold);margin-bottom:clamp(1rem,2.4vh,1.7rem)}
+.body{font-family:var(--sans);font-size:var(--body);line-height:1.6;color:var(--ink-soft);max-width:74ch}
+.body strong{color:var(--ink);font-weight:700}
 
-/* AIS logo top-right */
-.ais-logo {
-  position: absolute;
-  top: clamp(0.8rem, 1.8vh, 1.5rem);
-  right: clamp(0.8rem, 1.8vw, 1.5rem);
-  height: clamp(32px, 5vh, 54px);
-  z-index: 5;
-}
-.slide.title-slide .ais-logo, .slide.qa-slide .ais-logo {
-  top: clamp(1rem, 2.5vh, 2rem); right: clamp(1.2rem, 3vw, 2.5rem);
-  height: clamp(38px, 6vh, 64px);
-}
+/* TITLE */
+.title-slide{background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 clamp(3rem,9vw,9rem)}
+.title-slide::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--gold)}
+.t-logo{height:clamp(38px,5.5vh,58px);margin-bottom:clamp(1.4rem,4vh,2.8rem)}
+.t-ey{font-weight:700;font-size:var(--sm);letter-spacing:.34em;text-transform:uppercase;color:var(--gold-deep)}
+.t-main{font-family:var(--serif);font-weight:600;font-size:var(--t1);line-height:1.02;letter-spacing:-.02em;color:var(--ink);margin:.3em 0 .34em}
+.t-main em{font-style:italic;color:var(--gold)}
+.t-rule{width:120px;height:4px;background:var(--gold);margin:.2em 0 1.1em}
+.t-sub{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2.1vw,1.6rem);color:var(--mute);max-width:30ch;line-height:1.4}
+.t-meta{position:absolute;left:clamp(3rem,9vw,9rem);bottom:clamp(2rem,5vh,3.4rem);font-weight:700;font-size:var(--sm);letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft)}
+.t-meta b{color:var(--gold-deep)}
 
-/* Staggered reveal */
-.reveal { opacity: 0; transform: translateY(26px); transition: opacity var(--duration) var(--ease-out-expo), transform var(--duration) var(--ease-out-expo); }
-.slide.active .reveal { opacity: 1; transform: translateY(0); }
-.reveal-left { opacity: 0; transform: translateX(-26px); transition: opacity var(--duration) var(--ease-out-expo), transform var(--duration) var(--ease-out-expo); }
-.slide.active .reveal-left { opacity: 1; transform: translateX(0); }
-.reveal-scale { opacity: 0; transform: scale(0.96); transition: opacity var(--duration) var(--ease-out-expo), transform var(--duration) var(--ease-out-expo); }
-.slide.active .reveal-scale { opacity: 1; transform: scale(1); }
-.d1 { transition-delay: 0.05s; } .d2 { transition-delay: 0.18s; } .d3 { transition-delay: 0.32s; }
-.d4 { transition-delay: 0.45s; } .d5 { transition-delay: 0.58s; } .d6 { transition-delay: 0.7s; }
+/* DEMO SPLIT (checklist left / live iframe right, full bleed) */
+.demo{display:flex;background:var(--bg)}
+.demo-left{width:40%;min-width:340px;max-width:560px;padding:clamp(1.8rem,4vh,3rem) clamp(1.8rem,3vw,2.8rem);display:flex;flex-direction:column;border-right:1px solid var(--line);overflow-y:auto;position:relative}
+.demo-left .ais-logo{position:static;height:clamp(26px,3.6vh,40px);align-self:flex-start;margin-bottom:1.1rem}
+.demo-right{flex:1;position:relative;background:var(--navy-panel)}
+.demo-right iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.demo-cap{position:absolute;left:0;right:0;bottom:0;padding:.5em 1em;background:rgba(12,24,48,.82);color:#cfd6e6;font-size:var(--sm);font-weight:600;text-align:center;letter-spacing:.02em}
+.demo-cap b{color:var(--gold-soft)}
+.demo-ti{font-family:var(--serif);font-weight:600;font-size:clamp(1.35rem,2.4vw,2.1rem);line-height:1.1;letter-spacing:-.01em;color:var(--ink);margin:.28em 0 .26em}
+.demo-ti em{font-style:italic;color:var(--gold)}
 
-/* Title slide */
-.title-slide { display: flex; flex-direction: column; }
-.title-top {
-  flex: 1.15; background: var(--bg-white);
-  padding: clamp(1.5rem, 4vw, 4rem);
-  display: flex; flex-direction: column; justify-content: flex-end; position: relative;
-  border-bottom: clamp(0.4rem, 0.9vw, 0.8rem) solid var(--accent);
-}
-.title-top::before {
-  content: ''; position: absolute; top: 0; right: 0;
-  width: clamp(60px, 8vw, 120px); height: clamp(60px, 8vw, 120px);
-  background: var(--accent); border-radius: 0 0 0 100%; opacity: 0.15;
-}
-.title-bot {
-  flex: 0.85; background: var(--bg-dark); color: var(--text-light);
-  padding: clamp(1.5rem, 4vw, 4rem);
-  display: flex; flex-direction: column; justify-content: center; gap: clamp(0.6rem, 1.5vw, 1.2rem);
-}
-.title-eyebrow { font-weight: 800; font-size: var(--small-size); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-.title-main { font-weight: 800; font-size: var(--title-size); line-height: 0.95; letter-spacing: -0.03em; color: var(--text-dark); margin: clamp(0.8rem, 2vw, 1.4rem) 0 clamp(0.5rem, 1vw, 0.9rem); }
-.title-sub { font-weight: 300; font-size: clamp(0.95rem, 1.7vw, 1.25rem); line-height: 1.5; color: var(--text-mute); max-width: 80%; }
-.title-meta { font-weight: 700; font-size: var(--label-size); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-.title-tagline { font-weight: 500; font-size: clamp(1.1rem, 2.2vw, 1.7rem); line-height: 1.4; max-width: 90%; }
+/* clickable checklist */
+.chk-lab{font-weight:700;font-size:var(--lab);letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin:.4rem 0 .2rem}
+.chk{list-style:none;display:flex;flex-direction:column;margin-top:.3rem}
+.chk li{display:flex;gap:13px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line-soft);cursor:pointer;transition:opacity .2s}
+.chk li:last-child{border-bottom:0}
+.box{flex:0 0 auto;width:21px;height:21px;border:2px solid var(--ink);border-radius:5px;margin-top:2px;position:relative;transition:all .15s}
+.chk li.done .box{background:var(--ink);border-color:var(--ink)}
+.chk li.done .box::after{content:'';position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.chk .it{font-family:var(--serif);font-size:calc(clamp(.98rem,1.5vw,1.18rem)*var(--fs));font-weight:500;line-height:1.32;color:var(--ink)}
+.chk li.done .it{color:var(--mute)}
+.chk .sub{display:block;font-family:var(--sans);font-size:calc(clamp(.74rem,1.05vw,.86rem)*var(--fs));color:var(--mute);font-weight:400;line-height:1.45;margin-top:3px}
+.benefit{margin-top:auto;padding-top:1rem;font-family:var(--serif);font-style:italic;font-size:calc(clamp(.95rem,1.5vw,1.15rem)*var(--fs));color:var(--gold-deep);line-height:1.35}
 
-/* Content slides */
-.content-slide { background: var(--bg-dark); padding: clamp(0.8rem, 2vw, 2rem); display: flex; }
-.content-card {
-  flex: 1; background: var(--bg-white); border-radius: clamp(10px, 1.5vw, 20px);
-  padding: clamp(1.4rem, 3vw, 2.6rem) clamp(1.4rem, 3.5vw, 3rem);
-  display: flex; flex-direction: column; overflow: hidden; position: relative;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.25); max-height: 100%; gap: var(--gap-sm);
-}
-.content-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: clamp(3px, 0.4vw, 5px); background: linear-gradient(90deg, var(--accent), var(--gold)); }
+/* OVERVIEW */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(.7rem,1.4vw,1.1rem);flex:1;align-content:center;margin-top:.5rem}
+.ov{background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:clamp(1rem,2vw,1.5rem)}
+.ov .n{font-weight:800;font-size:var(--sm);color:var(--gold-deep);letter-spacing:.1em}
+.ov h3{font-family:var(--serif);font-weight:600;font-size:clamp(1.05rem,1.7vw,1.35rem);color:var(--ink);line-height:1.12;margin:.18em 0 .24em}
+.ov p{font-size:var(--sm);color:var(--mute);line-height:1.4}
 
-.eyebrow { font-weight: 800; font-size: var(--small-size); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-.eyebrow .num { font-weight: 800; color: var(--text-soft); margin-right: 0.8em; letter-spacing: 0.1em; }
-.slide-title { font-weight: 800; font-size: var(--h2-size); line-height: 1.05; letter-spacing: -0.025em; color: var(--text-dark); }
-.slide-title em { font-style: normal; color: var(--accent); }
-.slide-subtitle { font-weight: 500; font-size: var(--h3-size); color: var(--accent); line-height: 1.25; }
-.body-text { font-weight: 400; font-size: var(--body-size); color: var(--text-mute); line-height: 1.55; max-width: 80ch; }
-.body-text strong { color: var(--accent-deep); font-weight: 800; }
-.accent-bar { width: clamp(50px, 7vw, 110px); height: 4px; background: var(--accent); border-radius: 2px; margin: 0.3em 0 0.5em; }
+/* WHAT'S NEXT two-col */
+.two{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.4rem,3vw,2.6rem);flex:1;min-height:0;align-items:center;margin-top:.4rem}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.next-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.next-list li{font-family:var(--serif);font-size:var(--h3);color:var(--ink);line-height:1.3;padding-left:1.5em;position:relative}
+.next-list li::before{content:'';position:absolute;left:0;top:.55em;width:9px;height:9px;background:var(--gold);border-radius:50%}
+.next-list li span{display:block;font-family:var(--sans);font-size:var(--sm);color:var(--mute);font-weight:400;margin-top:2px}
+.store{background:var(--ink);border-radius:14px;padding:clamp(1.3rem,2.6vw,2rem);color:#fff}
+.store h4{font-family:var(--serif);font-weight:600;font-size:var(--h3);margin-bottom:.2em}
+.store p{font-size:var(--sm);color:#aeb8cc;margin-bottom:1.1em}
+.store-row{display:flex;flex-direction:column;gap:.7em}
+.store-item{display:flex;align-items:center;gap:.8em;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:.7em .95em}
+.store-item .ic{flex:0 0 auto;width:34px;height:34px;border-radius:8px;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800}
+.store-item .tx{font-weight:600;font-size:var(--sm)}
+.store-item .tx span{display:block;font-weight:400;color:#9fa9c0;font-size:calc(var(--sm)*.92)}
 
-/* Grids */
-.slide-3-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: var(--gap); flex: 1; min-height: 0; margin-top: var(--gap-sm); align-items: stretch; }
-.slide-3-text { display: flex; flex-direction: column; gap: var(--gap-sm); min-width: 0; justify-content: center; }
-.comp-wrap { display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0; overflow: hidden; }
-.comp-wrap > * { max-width: 100%; max-height: 100%; }
-@media (max-width: 900px) { .slide-3-grid { grid-template-columns: 1fr; } }
+/* TRS image slide */
+.trs-wrap{flex:1;display:flex;flex-direction:column;min-height:0;margin-top:.3rem}
+.trs-img{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.trs-img img{max-width:100%;max-height:58vh;object-fit:contain}
+.trs-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(.6rem,1.4vw,1.1rem)}
+.trs-step{border-top:3px solid var(--gold);padding-top:.6em}
+.trs-step b{font-family:var(--serif);font-size:calc(clamp(.95rem,1.5vw,1.18rem)*var(--fs));color:var(--ink);display:block}
+.trs-step span{font-size:var(--sm);color:var(--mute);line-height:1.35;display:block;margin-top:2px}
+.trs-foot{margin-top:1rem;font-size:var(--sm);color:var(--mute)}
+.trs-foot b{color:var(--gold-deep)}
+@media(max-width:760px){.trs-steps{grid-template-columns:1fr 1fr}}
 
-.two-col { display: grid; grid-template-columns: 0.34fr 0.66fr; gap: var(--gap); flex: 1; min-height: 0; margin-top: 0; align-items: stretch; }
-@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
-.col { display: flex; flex-direction: column; gap: var(--gap-sm); min-height: 0; justify-content: center; }
-.two-col .col { justify-content: flex-start; }
-.two-col .col.embed-col { justify-content: stretch; min-height: 0; }
-.app-embed { width: 100%; height: 100%; flex: 1; border-radius: 10px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.08); background: #fafafa; display: flex; }
-.app-embed iframe { width: 100%; height: 100%; border: none; display: block; }
-.live-cap { font-size: var(--small-size); color: var(--text-soft); margin-top: 0.5em; text-align: center; }
-.live-cap strong { color: var(--accent-deep); font-weight: 800; letter-spacing: 0.04em; }
+/* STAT tiles */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:clamp(.8rem,1.6vw,1.2rem);flex:1;align-content:center;margin-top:.4rem}
+.stat{background:var(--soft);border:1px solid var(--line);border-top:5px solid var(--gold);border-radius:0 0 12px 12px;padding:clamp(1.1rem,2.2vw,1.6rem)}
+.stat .num{font-family:var(--serif);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);color:var(--ink);line-height:1;letter-spacing:-.01em}
+.stat .num em{font-style:normal;color:var(--gold)}
+.stat .lab{font-size:var(--sm);color:var(--mute);line-height:1.35;margin-top:.4em}
 
-.slide-img { max-width: 100%; max-height: min(64vh, 520px); object-fit: contain; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.08); }
+/* PIPELINE big */
+.pipe-wrap{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:.4rem}
+.pipe-wrap img{max-width:100%;max-height:74vh;object-fit:contain;border:1px solid var(--line);border-radius:10px;box-shadow:0 16px 44px rgba(20,35,63,.14)}
 
-.emphasis { font-weight: 800; font-size: var(--h3-size); color: var(--text-dark); line-height: 1.25; letter-spacing: -0.01em; }
-.emphasis em { font-style: normal; color: var(--accent); }
+/* GRAPH full bleed */
+.graph-slide{background:var(--bg);padding:0;display:flex}
+.graph-slide iframe{flex:1;border:0;width:100%;height:100%}
+.graph-card{position:absolute;left:clamp(1.6rem,3vw,2.6rem);top:clamp(1.6rem,3vh,2.4rem);max-width:min(48%,520px);background:rgba(255,255,255,.92);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:clamp(1.1rem,2vw,1.5rem) clamp(1.3rem,2.2vw,1.7rem);z-index:3;backdrop-filter:blur(3px)}
+.graph-card .ey{margin-bottom:.2em}
+.graph-card h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.3rem,2.3vw,2rem);color:var(--ink);line-height:1.1;letter-spacing:-.01em;margin:.1em 0 .3em}
+.graph-card h2 em{font-style:italic;color:var(--gold)}
+.graph-card p{font-size:var(--sm);color:var(--mute);line-height:1.45}
+.graph-slide .ais-logo{z-index:4}
 
-.bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.5em; margin-top: var(--gap-sm); }
-.bullet-list li { font-weight: 500; font-size: var(--body-size); color: var(--text-dark); line-height: 1.4; padding-left: 1.5em; position: relative; }
-.bullet-list li::before { content: '→'; position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 800; }
-.bullet-list li strong { color: var(--accent-deep); font-weight: 800; }
+/* THE ASK */
+.ask{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.4rem,3vw,2.6rem);flex:1;min-height:0;align-items:stretch;margin-top:.4rem}
+@media(max-width:900px){.ask{grid-template-columns:1fr}}
+.ask-case{display:flex;flex-direction:column;justify-content:center}
+.ask-case p{font-family:var(--serif);font-size:clamp(1.05rem,1.8vw,1.4rem);line-height:1.45;color:var(--ink);max-width:30ch}
+.ask-case p em{font-style:italic;color:var(--gold)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.4rem;max-width:30ch}
+.metric{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem}
+.metric b{font-family:var(--serif);font-weight:700;font-size:clamp(1.3rem,2.4vw,1.9rem);color:var(--gold-deep);display:block;line-height:1}
+.metric span{font-size:calc(var(--sm)*.95);color:var(--mute);display:block;margin-top:.3em;line-height:1.3}
+.ask-card{background:var(--ink);border-radius:16px;padding:clamp(1.4rem,2.6vw,2rem);color:#fff;display:flex;flex-direction:column;justify-content:center}
+.ask-card .k{font-weight:700;font-size:var(--lab);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-soft)}
+.ask-card h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,2.8vw,2.3rem);color:#fff;line-height:1.06;margin:.2em 0 .5em}
+.ask-card .role-li{list-style:none;display:flex;flex-direction:column;gap:.55em;margin-bottom:1.1em}
+.ask-card .role-li li{font-size:var(--sm);color:rgba(255,255,255,.86);line-height:1.4;padding-left:1.4em;position:relative}
+.ask-card .role-li li::before{content:'';position:absolute;left:0;top:.5em;width:7px;height:7px;background:var(--gold);border-radius:50%}
+.ask-gov{border-top:1px solid rgba(255,255,255,.16);padding-top:.9em;font-size:var(--sm);color:rgba(255,255,255,.8);line-height:1.45}
+.ask-gov b{color:var(--gold-soft);font-weight:700}
 
-/* Feature / metric chips */
-.metric-chips { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: var(--gap-sm); }
-.mchip { display: inline-flex; align-items: baseline; gap: 0.45em; padding: 0.5em 0.95em; background: rgba(var(--accent-rgb), 0.09); border: 1px solid rgba(var(--accent-rgb), 0.22); border-radius: 999px; font-weight: 700; font-size: var(--small-size); color: var(--accent-deep); }
-.mchip b { font-weight: 800; color: var(--text-dark); }
+/* CLOSE */
+.close-slide{background:var(--ink);display:flex;flex-direction:column;justify-content:center;padding:0 clamp(3rem,9vw,9rem)}
+.close-slide::before{content:'';position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--gold)}
+.close-main{font-family:var(--serif);font-weight:600;font-size:var(--t1);color:#fff;line-height:1;letter-spacing:-.02em}
+.close-main em{font-style:italic;color:var(--gold-soft)}
+.close-sub{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2vw,1.5rem);color:#aeb8cc;margin-top:.6em}
+.close-meta{position:absolute;left:clamp(3rem,9vw,9rem);bottom:clamp(2rem,5vh,3.4rem);font-weight:700;font-size:var(--sm);letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft)}
 
-/* Demo button */
-.demo-btn { display: inline-flex; align-items: center; gap: 0.55em; align-self: flex-start; margin-top: var(--gap-sm); padding: 0.7em 1.3em; background: var(--accent); color: #fff; text-decoration: none; font-weight: 800; font-size: var(--small-size); border-radius: 10px; letter-spacing: 0.02em; box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.3); transition: transform 0.15s, box-shadow 0.15s; }
-.demo-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(var(--accent-rgb), 0.4); }
-
-/* Overview grid */
-.overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: var(--gap-sm); flex: 1; min-height: 0; margin-top: var(--gap-sm); align-content: center; }
-.ov-card { background: var(--bg-soft); border: 1px solid rgba(var(--accent-rgb), 0.16); border-radius: 16px; padding: clamp(0.9rem, 1.8vw, 1.4rem); display: flex; flex-direction: column; gap: 0.35em; position: relative; overflow: hidden; }
-.ov-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); }
-.ov-num { font-weight: 800; font-size: var(--small-size); color: var(--accent); letter-spacing: 0.1em; }
-.ov-title { font-weight: 800; font-size: clamp(1rem, 1.7vw, 1.3rem); color: var(--text-dark); line-height: 1.1; letter-spacing: -0.01em; }
-.ov-sub { font-weight: 500; font-size: var(--small-size); color: var(--text-mute); line-height: 1.4; }
-
-/* Stat tiles (data pitfalls) */
-.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--gap-sm); flex: 1; min-height: 0; margin-top: var(--gap-sm); align-content: center; }
-.stat-tile { background: var(--bg-soft); border: 1px solid rgba(20,35,63,0.1); border-radius: 16px; padding: clamp(1rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.3em; border-top: 5px solid var(--gold); }
-.stat-num { font-weight: 800; font-size: clamp(1.7rem, 3.5vw, 2.8rem); color: var(--text-dark); line-height: 1; letter-spacing: -0.02em; }
-.stat-num em { font-style: normal; color: var(--accent); }
-.stat-label { font-weight: 600; font-size: var(--small-size); color: var(--text-mute); line-height: 1.35; }
-
-/* Graph */
-.graph-wrap { flex: 1; min-height: 0; margin-top: var(--gap-sm); display: flex; align-items: center; justify-content: center; }
-.graph-wrap svg { width: 100%; height: 100%; max-height: 62vh; }
-.gnode-label { font-family: var(--font-display); font-weight: 800; fill: var(--text-dark); }
-.gnode-sub { font-family: var(--font-display); font-weight: 600; fill: var(--text-soft); }
-.ginfra { font-family: var(--font-display); font-weight: 700; fill: var(--text-mute); letter-spacing: 0.08em; }
-
-/* The Ask */
-.ask-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: var(--gap); flex: 1; min-height: 0; margin-top: var(--gap-sm); align-items: stretch; }
-@media (max-width: 900px) { .ask-grid { grid-template-columns: 1fr; } }
-.ask-card { background: var(--bg-soft); border: 1px solid rgba(var(--accent-rgb), 0.18); border-radius: 16px; padding: clamp(1rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.5em; min-height: 0; overflow: auto; }
-.ask-card.primary { background: var(--bg-dark); color: #fff; border: none; }
-.ask-kicker { font-weight: 800; font-size: var(--small-size); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
-.ask-card.primary .ask-kicker { color: var(--gold); }
-.ask-h { font-weight: 800; font-size: clamp(1.1rem, 2vw, 1.6rem); line-height: 1.1; letter-spacing: -0.015em; }
-.ask-card.primary .ask-h { color: #fff; }
-.kpi-table { width: 100%; border-collapse: collapse; margin-top: 0.4em; }
-.kpi-table td { padding: 0.4em 0.5em; font-size: clamp(0.72rem, 1.15vw, 0.9rem); vertical-align: top; border-bottom: 1px solid rgba(20,35,63,0.1); line-height: 1.3; }
-.kpi-table td.k { font-weight: 800; color: var(--text-dark); white-space: nowrap; }
-.kpi-table td.v { color: var(--text-mute); }
-.role-list { list-style: none; display: flex; flex-direction: column; gap: 0.5em; margin-top: 0.3em; }
-.role-list li { font-size: var(--small-size); line-height: 1.4; padding-left: 1.4em; position: relative; color: rgba(255,255,255,0.85); }
-.role-list li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); }
-.role-title-big { font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 2rem); color: var(--gold); letter-spacing: -0.02em; margin: 0.1em 0; }
-.role-from { font-size: var(--small-size); color: rgba(255,255,255,0.6); }
-.editable-note { background: rgba(var(--accent-rgb),0.12); border-radius: 4px; padding: 0 0.3em; }
-
-/* Q&A */
-.qa-slide { display: flex; flex-direction: column; }
-.qa-top { flex: 1; background: var(--bg-white); padding: clamp(1.5rem, 4vw, 4rem); display: flex; flex-direction: column; justify-content: center; position: relative; border-bottom: clamp(0.4rem, 0.9vw, 0.8rem) solid var(--accent); }
-.qa-main { font-weight: 800; font-size: calc(clamp(3rem, 12vw, 9rem) * var(--font-scale)); line-height: 0.9; letter-spacing: -0.04em; color: var(--text-dark); }
-.qa-main em { font-style: normal; color: var(--accent); }
-.qa-bot { flex: 0 0 auto; background: var(--bg-dark); color: var(--text-light); padding: clamp(1.2rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 4rem); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1em; }
-.qa-thanks { font-weight: 500; font-size: clamp(1rem, 2vw, 1.4rem); }
-.qa-meta { font-weight: 700; font-size: var(--small-size); letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
-
-/* Progress / nav / counter */
-.progress-bar-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.08); z-index: 100; }
-.progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.4s var(--ease-out-expo); }
-.nav-dots { position: fixed; right: clamp(0.6rem, 1.4vw, 1.2rem); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.55em; z-index: 200; }
-.nav-dots button { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--accent); background: transparent; cursor: pointer; padding: 0; transition: all 0.25s ease; }
-.nav-dots button:hover { background: rgba(var(--accent-rgb), 0.4); }
-.nav-dots button.active { background: var(--accent); transform: scale(1.4); }
-.slide-counter { position: fixed; bottom: clamp(0.8rem, 2vh, 1.5rem); right: clamp(1rem, 2.5vw, 2rem); font-weight: 700; font-size: var(--small-size); color: var(--text-light); mix-blend-mode: difference; letter-spacing: 0.12em; z-index: 200; }
-
-/* Font scale + fullscreen */
-.font-scale-ctrl { position: fixed; bottom: clamp(0.8rem, 2vh, 1.5rem); left: clamp(1rem, 2.5vw, 2rem); display: flex; align-items: center; gap: 2px; z-index: 1000; background: var(--bg-white); border: 1px solid rgba(var(--accent-rgb), 0.25); border-radius: 8px; padding: 0.28em 0.45em; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
-.font-scale-ctrl button { background: none; border: none; color: var(--text-mute); font-family: var(--font-display); font-size: clamp(0.6rem, 0.85vw, 0.72rem); font-weight: 800; cursor: pointer; padding: 0.2em 0.45em; border-radius: 4px; transition: color 0.15s, background 0.15s; line-height: 1; }
-.font-scale-ctrl button:hover { color: var(--accent); background: rgba(var(--accent-rgb), 0.1); }
-.font-scale-ctrl button:active { transform: scale(0.92); }
-.font-scale-ctrl button:disabled { opacity: 0.3; cursor: default; }
-#fontScaleLabel { font-weight: 700; font-size: clamp(0.55rem, 0.8vw, 0.68rem); color: var(--text-mute); min-width: 2.8em; text-align: center; letter-spacing: 0.04em; user-select: none; }
-.font-scale-ctrl .ctrl-divider { width: 1px; height: 1em; background: rgba(var(--accent-rgb), 0.3); margin: 0 4px; }
-.font-scale-ctrl .fs-btn { font-size: clamp(0.7rem, 1vw, 0.85rem); padding: 0.15em 0.4em; }
-
-#cursorFx { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; }
-
-/* Inline editing */
-.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
-.edit-toggle { position: fixed; top: clamp(0.8rem, 2vh, 1.5rem); left: clamp(1rem, 2.5vw, 2rem); z-index: 10001; background: var(--bg-white); color: var(--accent); border: 1.5px solid var(--accent); border-radius: 50%; width: 44px; height: 44px; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
-.edit-toggle.active { background: var(--accent); color: var(--bg-white); }
-.edit-banner { position: fixed; top: clamp(0.8rem, 2vh, 1.5rem); left: 50%; transform: translateX(-50%); z-index: 10001; background: var(--accent); color: var(--bg-white); font-weight: 700; font-size: var(--small-size); padding: 0.5em 1.2em; border-radius: 999px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-.edit-banner.active { opacity: 1; }
-body.edit-active [contenteditable="true"] { outline: 1.5px dashed rgba(var(--accent-rgb), 0.5); outline-offset: 4px; cursor: text; }
-body.edit-active [contenteditable="true"]:focus { outline: 2px solid var(--accent); background: rgba(var(--accent-rgb), 0.08); }
-
-/* Responsive image hiding */
-@media (max-width: 900px) { .slide .col:has(.slide-img), .slide .slide-img { display: none; } .slide .two-col { grid-template-columns: 1fr; } }
-@media (max-height: 620px) { .slide .col:has(.slide-img), .slide .slide-img { display: none; } }
-body.scaled-up .slide .col:has(.slide-img), body.scaled-up .slide .slide-img { display: none; }
-@media (max-height: 700px) { :root { --slide-padding: clamp(0.8rem, 2vw, 1.6rem); --gap: clamp(0.7rem, 1.5vw, 1.2rem); } }
-@media (max-height: 600px) { :root { --title-size: calc(clamp(1.8rem, 5.5vw, 3.5rem) * var(--font-scale)); --h2-size: calc(clamp(1.1rem, 3vw, 2rem) * var(--font-scale)); } .nav-dots { display: none; } }
+/* chrome */
+.pbar{position:fixed;top:0;left:0;width:100%;height:3px;background:rgba(20,35,63,.08);z-index:100}
+.pfill{height:100%;background:var(--gold);width:0;transition:width .4s var(--ease)}
+.dots{position:fixed;right:clamp(.5rem,1.2vw,1rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.5em;z-index:200}
+.dots button{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--gold);background:transparent;cursor:pointer;padding:0;transition:all .25s}
+.dots button:hover{background:rgba(184,144,47,.4)}
+.dots button.active{background:var(--gold);transform:scale(1.4)}
+.counter{position:fixed;bottom:clamp(.8rem,2vh,1.4rem);right:clamp(1rem,2.4vw,2rem);font-weight:700;font-size:var(--sm);color:var(--ink);letter-spacing:.12em;z-index:200;opacity:.55}
+.slide.demo ~ .counter,.counter{mix-blend-mode:normal}
+.fsx{position:fixed;bottom:clamp(.8rem,2vh,1.4rem);left:clamp(1rem,2.4vw,2rem);display:flex;align-items:center;gap:2px;z-index:1000;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.28em .45em;box-shadow:0 4px 12px rgba(20,35,63,.12)}
+.fsx button{background:none;border:none;color:var(--mute);font-family:var(--sans);font-size:clamp(.6rem,.85vw,.72rem);font-weight:800;cursor:pointer;padding:.2em .45em;border-radius:4px}
+.fsx button:hover{color:var(--gold-deep);background:var(--soft)}
+.fsx button:disabled{opacity:.3;cursor:default}
+#fsl{font-weight:700;font-size:clamp(.55rem,.8vw,.68rem);color:var(--mute);min-width:2.8em;text-align:center}
+.fsx .dv{width:1px;height:1em;background:var(--line);margin:0 4px}
+.fsx .fb{font-size:clamp(.7rem,1vw,.85rem);padding:.15em .4em}
+#cur{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999}
+.ehz{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer}
+.etg{position:fixed;top:clamp(.8rem,2vh,1.4rem);left:clamp(1rem,2.4vw,2rem);z-index:10001;background:var(--bg);color:var(--gold-deep);border:1.5px solid var(--gold);border-radius:50%;width:42px;height:42px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+.etg.show,.etg.active{opacity:1;pointer-events:auto}.etg.active{background:var(--gold);color:#fff}
+.eban{position:fixed;top:clamp(.8rem,2vh,1.4rem);left:50%;transform:translateX(-50%);z-index:10001;background:var(--gold);color:#fff;font-weight:700;font-size:var(--sm);padding:.5em 1.2em;border-radius:999px;letter-spacing:.08em;text-transform:uppercase;opacity:0;transition:opacity .3s}
+.eban.active{opacity:1}
+body.edit [contenteditable]{outline:1.5px dashed rgba(184,144,47,.5);outline-offset:4px}
+body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(184,144,47,.08)}
+@media(max-height:680px){:root{--t2:calc(clamp(1.2rem,3vw,2rem)*var(--fs))} .dots{display:none}}
 </style>
 <script>
-/* === NO-LOCALSTORAGE POLICY === purge + neutralise so nothing persists across loads. */
-(function () {
-  try { localStorage.clear(); } catch (e) {}
-  try { Storage.prototype.getItem = function () { return null; }; Storage.prototype.setItem = function () {}; } catch (e) {}
-})();
+(function(){try{localStorage.clear()}catch(e){}try{Storage.prototype.getItem=function(){return null};Storage.prototype.setItem=function(){}}catch(e){}})();
 </script>
 </head>
 <body>
+<div class="pbar"><div class="pfill" id="pfill"></div></div>
+<nav class="dots" id="dots" aria-label="Slides"></nav>
+<div class="counter" id="counter">1 / 14</div>
+<canvas id="cur" aria-hidden="true"></canvas>
+<div class="fsx" id="fsx"><button id="fsd" title="Smaller">A−</button><span id="fsl">100%</span><button id="fsu" title="Larger">A+</button><span class="dv"></span><button id="fsf" class="fb" title="Fullscreen">⛶</button></div>
+<div class="ehz" aria-hidden="true"></div><button class="etg" id="etg" title="Edit (E)">✎</button><div class="eban" id="eban">Edit mode · click text, ⌘S to save</div>
 
-<div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
-<div class="slide-counter" id="slideCounter">1 / 13</div>
-<canvas id="cursorFx" aria-hidden="true"></canvas>
+<div class="slides-container" id="sc">
 
-<div class="font-scale-ctrl" id="fontScaleCtrl" aria-label="Display controls">
-  <button id="fontScaleDown" aria-label="Decrease font size" title="Smaller (⌘ ,)">A−</button>
-  <span id="fontScaleLabel">100%</span>
-  <button id="fontScaleUp" aria-label="Increase font size" title="Larger (⌘ .)">A+</button>
-  <span class="ctrl-divider" aria-hidden="true"></span>
-  <button id="fullscreenBtn" class="fs-btn" aria-label="Enter fullscreen" title="Fullscreen (⌘ F)">⛶</button>
+  <!-- 1 TITLE -->
+  <section class="slide title-slide active" data-slide="1">
+    <img src="assets/AIS Navy.png" alt="Australian International School Sharjah" class="t-logo reveal d1">
+    <span class="t-ey reveal d1">Executive Briefing · July 2026</span>
+    <h1 class="t-main reveal d2">AI and Development<br>at <em>AIS</em></h1>
+    <div class="t-rule reveal d3"></div>
+    <p class="t-sub reveal d3">A year of building data-driven, teacher-first systems across the school, and where they go next.</p>
+    <div class="t-meta reveal d4">Prepared for <b>Steven McLuckie</b> · Executive Principal</div>
+  </section>
+
+  <!-- 2 OVERVIEW -->
+  <section class="slide content" data-slide="2">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">00</span>Overview</span>
+    <h2 class="ti reveal d2">Five workstreams, <em>one direction</em>.</h2>
+    <div class="rule reveal d3"></div>
+    <div class="ov-grid">
+      <div class="ov reveal d3"><span class="n">01</span><h3>R3 Lesson Observations</h3><p>Capture, analyse and coach teaching quality for the 2027 review.</p></div>
+      <div class="ov reveal d3"><span class="n">02</span><h3>Academic Reports</h3><p>Parent-facing reports with login and finance built in.</p></div>
+      <div class="ov reveal d4"><span class="n">03</span><h3>IRL / TRS Automation</h3><p>Daily teacher-cover allocation, fully automated.</p></div>
+      <div class="ov reveal d4"><span class="n">04</span><h3>Feedback and Attendance</h3><p>Authentic teacher feedback and attendance at a glance.</p></div>
+      <div class="ov reveal d5"><span class="n">05</span><h3>Lesson and Slide AI</h3><p>Turning our teaching craft into ready-to-teach lessons.</p></div>
+    </div>
+    <p class="body reveal d6" style="margin-top:1.2rem">Built this year. Shared infrastructure. <strong>Tracked against clear KPIs.</strong></p>
+  </section>
+
+  <!-- 3 R3 (demo) -->
+  <section class="slide demo" data-slide="3">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">01</span>R3 Lesson Observations</span>
+      <h2 class="demo-ti">We don't just collect data. <em>We use it.</em></h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">Snapshot: Story vs Detail<span class="sub">References on every claim, then explain the benefit</span></span></li>
+        <li><span class="box"></span><span class="it">Report: Simple vs In-depth<span class="sub">References, then explain the benefit</span></span></li>
+        <li><span class="box"></span><span class="it">Teacher Observation page</span></li>
+        <li><span class="box"></span><span class="it">Next-steps coaching, SPEA-driven<span class="sub">Reads all notes (observer notes, strengths, weaknesses), writes a summary, places the teacher on the judgement scale, reads the rubric for where they are and where to go next, gives coaching references (Dave and the HODs, 5 per rubric field), then the observer approves, sends it, and has the conversation. Claire Gadsby and other resources included.</span></span></li>
+      </ul>
+      <p class="benefit">We're not collecting data, we're improving teachers.</p>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://rogerceaser21.github.io/Data-Representation/dashboard/" title="Live R3 dashboard" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live dashboard · <b>unlocked during the demo</b></div>
+    </div>
+  </section>
+
+  <!-- 4 R3 WHAT'S NEXT -->
+  <section class="slide content" data-slide="4">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">01</span>R3 · What's next</span>
+    <h2 class="ti reveal d2">From this round to a <em>coaching engine</em>.</h2>
+    <div class="rule reveal d3"></div>
+    <div class="two">
+      <ul class="next-list">
+        <li class="reveal d3">Teacher Dashboard<span>The 8-point per-teacher view (possible before tomorrow)</span></li>
+        <li class="reveal d3">OTP and APR lesson observations</li>
+        <li class="reveal d4">Apple Pencil notes used as AI context</li>
+        <li class="reveal d4">Role-based logins: teacher, observer, administrator</li>
+        <li class="reveal d5">Manipulate by observer, by date, by trend<span>Needs one more round of R3 observations</span></li>
+      </ul>
+      <div class="store reveal-l d4">
+        <h4>Every observation, stored three ways</h4>
+        <p>Captured once, safe in three places.</p>
+        <div class="store-row">
+          <div class="store-item"><span class="ic">✉</span><span class="tx">Emailed at the time of observation<span>An immediate, timestamped record</span></span></div>
+          <div class="store-item"><span class="ic">▦</span><span class="tx">Google Sheet<span>The working source of truth</span></span></div>
+          <div class="store-item"><span class="ic">⛁</span><span class="tx">Supabase database<span>Powers the live dashboard</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 ACADEMIC (demo) -->
+  <section class="slide demo" data-slide="5">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">02</span>Academic Reports</span>
+      <h2 class="demo-ti">Reports parents log in to, <em>with finance built in</em>.</h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">A full PRD is written</span></li>
+        <li><span class="box"></span><span class="it">Parent login</span></li>
+        <li><span class="box"></span><span class="it">Every report archived to Google Drive</span></li>
+        <li><span class="box"></span><span class="it">Finance-gate<span class="sub">Unpaid fees see page one only, then a prompt to visit the Finance Department to unlock the rest</span></span></li>
+        <li><span class="box"></span><span class="it">Built on the principal-approved AIS template<span class="sub">Modelled on Aaira's Grade 6 report</span></span></li>
+      </ul>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://rogerceaser21.github.io/sample-student-report/" title="Live academic report" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live report · <b>unlocked during the demo</b></div>
+    </div>
+  </section>
+
+  <!-- 6 IRL/TRS -->
+  <section class="slide content" data-slide="6">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">03</span>IRL / TRS Automation</span>
+    <h2 class="ti reveal d2">One daily email. <em>Zero cover confusion.</em></h2>
+    <div class="rule reveal d3"></div>
+    <div class="trs-wrap">
+      <div class="trs-img reveal-scale d3"><img src="assets/trs.jpg" alt="Automated cover flow: email to calendars to staff notifications"></div>
+      <div class="trs-steps">
+        <div class="trs-step reveal d3"><b>Mike's daily email</b><span>The cover bulletin lands in the inbox</span></div>
+        <div class="trs-step reveal d4"><b>AI reads it</b><span>Who covers what, and when</span></div>
+        <div class="trs-step reveal d4"><b>Calendars</b><span>An event on each teacher's calendar</span></div>
+        <div class="trs-step reveal d5"><b>Staff notified</b><span>A personal heads-up, no confusion</span></div>
+      </div>
+      <p class="trs-foot reveal d6">Live in Secondary since May 2026, fully unattended, Monday to Thursday at 08:00. <b>Next:</b> extend to Primary, then full automation, where the timetabler just drops updated documents in a folder.</p>
+    </div>
+  </section>
+
+  <!-- 7 DATA PITFALLS -->
+  <section class="slide content" data-slide="7">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">03</span>A problem worth fixing</span>
+    <h2 class="ti reveal d2">Automating cover <em>exposed a data problem</em>.</h2>
+    <div class="rule reveal d3"></div>
+    <p class="body reveal d3">To put cover on the right calendars, every teacher record had to be correct. It wasn't.</p>
+    <div class="stat-grid">
+      <div class="stat reveal d3"><div class="num">~3,000 <em>vs</em> ~400</div><div class="lab">"active" directory accounts versus real cover-eligible staff</div></div>
+      <div class="stat reveal d4"><div class="num">47</div><div class="lab">records carrying someone else's email address</div></div>
+      <div class="stat reveal d4"><div class="num">67</div><div class="lab">staff rows with no surname recorded</div></div>
+      <div class="stat reveal d5"><div class="num">0</div><div class="lab">reconciliation between HR, timetabling and IT</div></div>
+    </div>
+    <p class="body reveal d6" style="margin-top:1rem">Durable fixes are being routed back to source with Pic, Boyd and IT. <strong>The clean data, not just the automation, is the win.</strong></p>
+  </section>
+
+  <!-- 8 FEEDBACK (demo) -->
+  <section class="slide demo" data-slide="8">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">04</span>The Feedback App</span>
+      <h2 class="demo-ti">The teacher's feedback, <em>not a generic AI's</em>.</h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">The problem<span class="sub">Tools like Brisk and Chalkie auto-write student feedback</span></span></li>
+        <li><span class="box"></span><span class="it">Parents want the teacher's own expertise<span class="sub">Not a watered-down, generic version</span></span></li>
+        <li><span class="box"></span><span class="it">Unchecked AI errors reach the child</span></li>
+        <li><span class="box"></span><span class="it">This app keeps the teacher as the author<span class="sub">They record real feedback in their own voice, screen or video</span></span></li>
+        <li><span class="box"></span><span class="it">Students replay it anytime, until they understand</span></li>
+        <li><span class="box"></span><span class="it">Dave and I: our top priority after the dashboard and reports</span></li>
+      </ul>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://www.thefeedbackapp.net/" title="Live Feedback App" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live · <b>thefeedbackapp.net</b></div>
+    </div>
+  </section>
+
+  <!-- 9 ATTENDANCE (demo) -->
+  <section class="slide demo" data-slide="9">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">04</span>The Attendance App</span>
+      <h2 class="demo-ti">Attendance at a glance, <em>emails that write themselves</em>.</h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">See attendance from school level down to each student</span></li>
+        <li><span class="box"></span><span class="it">Ask questions in plain English<span class="sub">An AI panel answers from the data</span></span></li>
+        <li><span class="box"></span><span class="it">Parent emails drafted automatically</span></li>
+        <li><span class="box"></span><span class="it">Next: backend moves to Leon's Main Database</span></li>
+        <li><span class="box"></span><span class="it">Next: restyle to match the dashboard</span></li>
+        <li><span class="box"></span><span class="it">Next: email automation retires the $20/month tool<span class="sub">Grade 1 first, then the rest</span></span></li>
+      </ul>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://attend.thefeedbackapp.net/" title="Live Attendance App" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live · <b>attend.thefeedbackapp.net</b></div>
+    </div>
+  </section>
+
+  <!-- 10 LESSON PIPELINE (big) -->
+  <section class="slide content" data-slide="10">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">05</span>Lesson and Slide AI</span>
+    <h2 class="ti reveal d2">How AIS builds a lesson: <em>the full pipeline</em>.</h2>
+    <div class="rule reveal d3"></div>
+    <div class="pipe-wrap reveal-scale d3"><img src="assets/pipeline-c.png" alt="The full lesson and slide generation pipeline, five phases from request to teaching"></div>
+  </section>
+
+  <!-- 11 LESSON LIVE (demo) -->
+  <section class="slide demo" data-slide="11">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">05</span>Lesson and Slide AI</span>
+      <h2 class="demo-ti">Our craft, <em>turned into ready-to-teach lessons</em>.</h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">Reads the 63 TLAC techniques we adopted</span></li>
+        <li><span class="box"></span><span class="it">Our lesson elements and structure</span></li>
+        <li><span class="box"></span><span class="it">AC9 cognitive verbs and ACARA</span></li>
+        <li><span class="box"></span><span class="it">Vertical alignment, and what came before and next</span></li>
+        <li><span class="box"></span><span class="it">Drafts the full lesson plan</span></li>
+        <li><span class="box"></span><span class="it">Teacher reviews, edits and approves<span class="sub">The gate, no slides without it</span></span></li>
+        <li><span class="box"></span><span class="it">Generates the deck, HTML or PowerPoint</span></li>
+        <li><span class="box"></span><span class="it">Nine lessons already live in classrooms</span></li>
+      </ul>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://rogerceaser21.github.io/ai-job-fair-build-stand-y5y6/" title="Live lesson deck" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live lesson · <b>Cycle 9, Year 5 and 6</b></div>
+    </div>
+  </section>
+
+  <!-- 12 GRAPHIFY -->
+  <section class="slide graph-slide" data-slide="12">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <div class="graph-card">
+      <span class="ey"><span class="n">06</span>One ecosystem</span>
+      <h2>It's not six projects. <em>It's one system.</em></h2>
+      <p>Every workstream shares the same foundations: Supabase, Google Workspace, AI and a common design language. Drag a node, zoom in, follow the links.</p>
+    </div>
+    <iframe src="assets/graph.html" title="Interactive map of the AIS systems" data-reload-on-show="true"></iframe>
+  </section>
+
+  <!-- 13 THE ASK -->
+  <section class="slide content" data-slide="13">
+    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+    <span class="ey reveal d1"><span class="n">07</span>The ask</span>
+    <h2 class="ti reveal d2">A home for the work, <em>and a title that matches it</em>.</h2>
+    <div class="rule reveal d3"></div>
+    <div class="ask">
+      <div class="ask-case reveal-l d3">
+        <p>This year I designed, built and shipped <em>six systems</em> now used live across AIS, from the R3 observation dashboard to automated cover and AI-generated lessons. They share one platform and one goal: turning the school's data into better teaching.</p>
+        <div class="metrics">
+          <div class="metric"><b>6</b><span>systems live across the school</span></div>
+          <div class="metric"><b>109</b><span>June lessons analysed in R3</span></div>
+          <div class="metric"><b>9</b><span>AI lessons in classrooms</span></div>
+          <div class="metric"><b>1</b><span>connected platform</span></div>
+        </div>
+      </div>
+      <div class="ask-card reveal d4">
+        <span class="k">The role</span>
+        <h2>Head of AI and Development</h2>
+        <ul class="role-li">
+          <li>Owns AIS's AI strategy and internal software, end to end</li>
+          <li>Designs, builds, deploys and maintains the stack</li>
+          <li>One point of accountability for data to decisions</li>
+        </ul>
+        <div class="ask-gov">Line-managed by <b>Dave, Head of Learning and Teaching</b>, with <b>KPIs</b> tracked across every workstream.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 CLOSE -->
+  <section class="slide close-slide" data-slide="14">
+    <h2 class="close-main reveal d1">Thank <em>you</em>.</h2>
+    <p class="close-sub reveal d2">Happy to walk through any system live.</p>
+    <div class="close-meta reveal d3">AI and Development at AIS · Igor Sesar · 2026</div>
+  </section>
+
 </div>
 
-<div class="edit-hotzone" aria-hidden="true"></div>
-<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
-<div class="edit-banner" id="editBanner">Edit mode · click any text, ⌘S to save</div>
-
-<div class="slides-container" id="slidesContainer">
-
-  <!-- ===== SLIDE 1 — TITLE ===== -->
-  <section class="slide title-slide active" data-slide="1" aria-label="Title">
-    <div class="title-top">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo reveal d1">
-      <span class="title-eyebrow reveal d1">Executive Briefing · July 2026</span>
-      <h1 class="title-main reveal d2">AI &amp; Development<br>at AIS</h1>
-      <p class="title-sub reveal d3">A year of building data-driven, teacher-first systems across the school, and where they go next.</p>
-    </div>
-    <div class="title-bot">
-      <span class="title-meta reveal d3">Prepared for Steven McLuckie · Executive Principal</span>
-      <p class="title-tagline reveal d4">From <span style="color: var(--accent);">collecting data</span> → <span style="color: var(--gold);">improving teaching</span>.</p>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 2 — OVERVIEW ===== -->
-  <section class="slide content-slide" data-slide="2" aria-label="Overview">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">00</span> Overview</span>
-      <h2 class="slide-title reveal d2">Five workstreams, <em>one direction</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="overview-grid">
-        <div class="ov-card reveal d3"><span class="ov-num">01</span><span class="ov-title">R3 Lesson Observations</span><span class="ov-sub">Capture, analyse and coach teaching quality for the 2027 review.</span></div>
-        <div class="ov-card reveal d3"><span class="ov-num">02</span><span class="ov-title">Academic Reports</span><span class="ov-sub">Parent-facing reports with login and finance built in.</span></div>
-        <div class="ov-card reveal d4"><span class="ov-num">03</span><span class="ov-title">IRL / TRS Automation</span><span class="ov-sub">Daily teacher-cover allocation, fully automated.</span></div>
-        <div class="ov-card reveal d4"><span class="ov-num">04</span><span class="ov-title">Feedback &amp; Attendance</span><span class="ov-sub">Authentic teacher feedback and attendance at a glance.</span></div>
-        <div class="ov-card reveal d5"><span class="ov-num">05</span><span class="ov-title">Lesson &amp; Slide AI</span><span class="ov-sub">Turning our teaching craft into ready-to-teach lessons.</span></div>
-      </div>
-      <p class="body-text reveal d6" style="margin-top:var(--gap-sm);">Built this year. Shared infrastructure. <strong>Tracked against clear KPIs.</strong></p>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 3 — R3 OBSERVATIONS (live dashboard) ===== -->
-  <section class="slide content-slide" data-slide="3" aria-label="R3 Observations">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <div class="two-col">
-        <div class="col">
-          <span class="eyebrow reveal-left d1"><span class="num">01</span> R3 Lesson Observations</span>
-          <h2 class="slide-title reveal-left d2">We don't just collect data. <em>We use it.</em></h2>
-          <div class="accent-bar reveal-left d3"></div>
-          <p class="body-text reveal-left d3">Every observation is captured through a gated form, <strong>triple-stored</strong> (Google Sheet, Supabase and a backup email), and turned into a live, SPEA-aligned dashboard, from a governance snapshot down to each teacher's coaching next steps.</p>
-          <div class="metric-chips reveal-left d4">
-            <span class="mchip"><b>109</b> lessons</span>
-            <span class="mchip"><b>103</b> teachers</span>
-            <span class="mchip"><b>10</b> SEAS criteria</span>
-            <span class="mchip">June R3 sweep</span>
-          </div>
-        </div>
-        <div class="col embed-col reveal-scale d5">
-          <div class="app-embed">
-            <iframe src="https://rogerceaser21.github.io/Data-Representation/dashboard/" title="AIS R3 Observation Dashboard (live)" allow="fullscreen" data-reload-on-show="true"></iframe>
-          </div>
-          <p class="live-cap">Live dashboard · <strong>unlocked during the demo</strong></p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 4 — R3 WHAT'S NEXT (SEAS spectrum) ===== -->
-  <section class="slide content-slide" data-slide="4" aria-label="R3 next steps">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">01</span> R3 · What's next</span>
-      <h2 class="slide-title reveal d2">From this round to a <em>coaching engine</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="slide-3-grid">
-        <div class="slide-3-text">
-          <ul class="bullet-list">
-            <li class="reveal d3"><strong>Teacher Dashboard</strong>, the 8-point per-teacher view.</li>
-            <li class="reveal d3"><strong>OTP &amp; APR</strong> lesson observations added.</li>
-            <li class="reveal d4"><strong>Apple Pencil</strong> notes used as AI context.</li>
-            <li class="reveal d4"><strong>Role-based logins</strong>: teacher, observer, administrator.</li>
-            <li class="reveal d5"><strong>Trend analysis</strong> across rounds and observers.</li>
-            <li class="reveal d5"><strong>@ais.ae SSO</strong> with per-role security.</li>
-          </ul>
-        </div>
-        <div class="comp-wrap reveal-scale d4">
-          <!-- LIFTED: SEAS 6-point spectrum (real dashboard component) -->
-          <div class="seas-spectrum" style="
-            --navy:#14233f; --accent:#1257FF; --ink:#14233f;
-            --bg:#f4f2ea; --soft:rgba(20,35,63,.14); --mute:#6b7790;
-            --r1:#0f5f30; --r2:#2ea15a; --r3:#86ab2e; --r4:#d68a1a; --r5:#d4663a; --r6:#c22f24;
-            font-family:'Manrope',system-ui,sans-serif; width:100%; max-width:460px; padding:22px 24px;
-            background:var(--bg); border:1px solid var(--soft); border-radius:16px; color:var(--ink); box-shadow:0 14px 36px rgba(0,0,0,.18);">
-            <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:30px;">
-              <span style="font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--mute); font-weight:800;">All observations</span>
-              <span style="font-style:italic; font-weight:700; font-size:20px; color:var(--r3);">Good</span>
-            </div>
-            <div style="position:relative; height:108px;">
-              <div style="position:absolute; left:0; right:0; top:46px; height:18px; border-radius:9px;
-                background:linear-gradient(90deg,var(--r1),var(--r2) 20%,var(--r3) 40%,var(--r4) 60%,var(--r5) 80%,var(--r6));"></div>
-              <span style="position:absolute; top:30px; left:25%;    width:13px; height:13px; border-radius:50%; background:var(--r2); border:2px solid var(--bg); transform:translateX(-50%);"></span>
-              <span style="position:absolute; top:30px; left:41.67%; width:13px; height:13px; border-radius:50%; background:var(--r3); border:2px solid var(--bg); transform:translateX(-50%);"></span>
-              <span style="position:absolute; top:16px; left:41.67%; width:13px; height:13px; border-radius:50%; background:var(--r3); border:2px solid var(--bg); transform:translateX(-50%);"></span>
-              <span style="position:absolute; top:30px; left:58.33%; width:13px; height:13px; border-radius:50%; background:var(--r4); border:2px solid var(--bg); transform:translateX(-50%);"></span>
-              <div style="position:absolute; top:66px; left:41.67%; transform:translateX(-50%);
-                width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:11px solid var(--r3);"></div>
-              <div style="position:absolute; top:82px; left:0; right:0; font-size:9px; font-weight:700; color:var(--mute);">
-                <span style="position:absolute; left:8.33%;  transform:translateX(-50%);">Outstanding</span>
-                <span style="position:absolute; left:25%;    transform:translateX(-50%);">Very Good</span>
-                <span style="position:absolute; left:41.67%; transform:translateX(-50%);">Good</span>
-                <span style="position:absolute; left:58.33%; transform:translateX(-50%);">Acceptable</span>
-                <span style="position:absolute; left:75%;    transform:translateX(-50%);">Weak</span>
-                <span style="position:absolute; left:91.67%; transform:translateX(-50%);">Very Weak</span>
-              </div>
-            </div>
-            <p style="margin:14px 0 0; font-size:11px; color:var(--mute); line-height:1.4;">The SEAS 6-point scale. Each teacher scored on best evidence, every dot a real lesson.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 5 — ACADEMIC REPORTS (finance gate) ===== -->
-  <section class="slide content-slide" data-slide="5" aria-label="Academic Reports">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">02</span> Academic Reports · next year</span>
-      <h2 class="slide-title reveal d2">Reports parents log in to, <em>with finance built in</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="slide-3-grid">
-        <div class="slide-3-text">
-          <p class="body-text reveal d3">A full PRD is written. Every report is generated from the <strong>principal-approved AIS template</strong> (built on Aaira's Grade 6 report), archived to Google Drive, and opened through a parent login.</p>
-          <p class="body-text reveal d4">A parent with outstanding fees still receives the same report, but sees only the first page, with a quiet prompt to <strong>visit the Finance Department</strong> to unlock the rest.</p>
-        </div>
-        <div class="comp-wrap reveal-scale d4">
-          <!-- LIFTED: finance-gate mock (built on the real Aaira report look) -->
-          <div style="--navy:#0a0d1f;--accent:#FFBA14;--ink:#f2efe6;--bg:#11162e;--soft:#131938;--mute:#9ea3bf;
-                      font-family:'Manrope',system-ui,sans-serif;background:var(--navy);color:var(--ink);
-                      width:100%; max-width:430px;border-radius:14px;overflow:hidden;
-                      box-shadow:0 24px 60px -20px rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.08);">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;
-                        border-bottom:1px solid rgba(255,255,255,.08);font-size:10px;letter-spacing:.18em;
-                        text-transform:uppercase;color:var(--mute);font-weight:700;">
-              <span>AIS Sharjah · End of Term Report</span><span style="color:var(--accent);">05 / 07</span>
-            </div>
-            <div style="padding:18px;">
-              <div style="font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:#EF343A;font-weight:800;margin-bottom:6px;">Subject Results</div>
-              <h3 style="font-weight:800;font-size:23px;margin:0 0 14px;letter-spacing:-.01em;">Aaira Iman · <span style="font-style:italic;font-weight:500;color:var(--accent);">Grade 6</span></h3>
-              <div style="display:flex;flex-direction:column;gap:7px;">
-                <div style="display:grid;grid-template-columns:1fr auto;align-items:center;background:var(--soft);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:10px 13px;">
-                  <span style="font-weight:600;font-size:15px;">English</span>
-                  <span style="background:var(--accent);color:var(--navy);font-weight:800;font-style:italic;border-radius:999px;padding:3px 13px;font-size:13px;">H</span></div>
-                <div style="display:grid;grid-template-columns:1fr auto;align-items:center;background:var(--soft);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:10px 13px;">
-                  <span style="font-weight:600;font-size:15px;">Mathematics</span>
-                  <span style="background:var(--accent);color:var(--navy);font-weight:800;font-style:italic;border-radius:999px;padding:3px 13px;font-size:13px;">H</span></div>
-                <div style="display:grid;grid-template-columns:1fr auto;align-items:center;background:var(--soft);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:10px 13px;">
-                  <span style="font-weight:600;font-size:15px;">Science</span>
-                  <span style="background:#4d8dff;color:#fff;font-weight:800;font-style:italic;border-radius:999px;padding:3px 13px;font-size:13px;">S</span></div>
-              </div>
-            </div>
-            <div style="position:relative;">
-              <div style="filter:blur(6px);opacity:.5;padding:0 18px 22px;pointer-events:none;display:flex;flex-direction:column;gap:7px;">
-                <div style="height:40px;background:var(--soft);border-radius:9px;"></div>
-                <div style="height:40px;background:var(--soft);border-radius:9px;"></div>
-                <div style="height:40px;background:var(--soft);border-radius:9px;"></div>
-              </div>
-              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;padding:18px;
-                          background:linear-gradient(180deg,rgba(10,13,31,.55),rgba(10,13,31,.93));">
-                <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,186,20,.15);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFBA14" stroke-width="2" stroke-linecap="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
-                </div>
-                <div style="font-size:16px;font-weight:700;max-width:24ch;line-height:1.3;">The rest of this report is on hold</div>
-                <div style="font-size:12px;color:var(--mute);max-width:30ch;line-height:1.5;">Please visit the <strong style="color:var(--accent);">Finance Department</strong> to settle your account and view the full report.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 6 — IRL/TRS AUTOMATION (flow strip) ===== -->
-  <section class="slide content-slide" data-slide="6" aria-label="IRL TRS Automation">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">03</span> IRL / TRS Automation</span>
-      <h2 class="slide-title reveal d2">One daily email. <em>Zero cover confusion.</em></h2>
-      <div class="accent-bar reveal d3"></div>
-      <p class="body-text reveal d3">The daily cover bulletin is read automatically, parsed into who covers what and when, written straight onto each teacher's calendar, and followed by a personal heads-up email. Live in Secondary since May 2026, fully unattended, Monday to Thursday at 08:00.</p>
-      <div class="comp-wrap reveal-scale d4" style="margin-top:var(--gap-sm); align-items:flex-start;">
-        <!-- LIFTED: IRL/TRS 4-step flow strip -->
-        <div style="--navy:#14233f;--accent:#1257ff;--ink:#14233f;--bg:#ffffff;--soft:#f1f4fa;--mute:#6b7685;
-                    font-family:'Manrope',system-ui,sans-serif;color:var(--ink);width:100%;max-width:1000px;box-sizing:border-box;">
-          <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:separate;">
-            <tr>
-              <td style="width:23%;vertical-align:top;background:var(--soft);border:1px solid #d8dde6;border-top:4px solid var(--navy);border-radius:10px;padding:15px 13px;text-align:center;">
-                <div style="font-size:28px;line-height:1;">📧</div>
-                <div style="font-size:11px;color:var(--accent);font-weight:800;margin:8px 0 4px;">STEP 1</div>
-                <div style="font-size:14px;font-weight:800;color:var(--navy);">Mike's daily email</div>
-                <div style="font-size:12px;color:var(--mute);margin-top:4px;">The cover bulletin lands in the inbox</div>
-              </td>
-              <td style="width:2.6%;text-align:center;font-size:22px;color:var(--accent);font-weight:800;">&rsaquo;</td>
-              <td style="width:23%;vertical-align:top;background:var(--soft);border:1px solid #d8dde6;border-top:4px solid var(--navy);border-radius:10px;padding:15px 13px;text-align:center;">
-                <div style="font-size:28px;line-height:1;">🧠</div>
-                <div style="font-size:11px;color:var(--accent);font-weight:800;margin:8px 0 4px;">STEP 2</div>
-                <div style="font-size:14px;font-weight:800;color:var(--navy);">Parse cover lessons</div>
-                <div style="font-size:12px;color:var(--mute);margin-top:4px;">Finds who covers what, and when</div>
-              </td>
-              <td style="width:2.6%;text-align:center;font-size:22px;color:var(--accent);font-weight:800;">&rsaquo;</td>
-              <td style="width:23%;vertical-align:top;background:var(--soft);border:1px solid #d8dde6;border-top:4px solid var(--navy);border-radius:10px;padding:15px 13px;text-align:center;">
-                <div style="font-size:28px;line-height:1;">📅</div>
-                <div style="font-size:11px;color:var(--accent);font-weight:800;margin:8px 0 4px;">STEP 3</div>
-                <div style="font-size:14px;font-weight:800;color:var(--navy);">Write to calendars</div>
-                <div style="font-size:12px;color:var(--mute);margin-top:4px;">An event on each teacher's calendar</div>
-              </td>
-              <td style="width:2.6%;text-align:center;font-size:22px;color:var(--accent);font-weight:800;">&rsaquo;</td>
-              <td style="width:23%;vertical-align:top;background:var(--soft);border:1px solid #d8dde6;border-top:4px solid var(--accent);border-radius:10px;padding:15px 13px;text-align:center;">
-                <div style="font-size:28px;line-height:1;">✅</div>
-                <div style="font-size:11px;color:var(--accent);font-weight:800;margin:8px 0 4px;">STEP 4</div>
-                <div style="font-size:14px;font-weight:800;color:var(--navy);">Email the staff</div>
-                <div style="font-size:12px;color:var(--mute);margin-top:4px;">Each gets a heads-up, no confusion</div>
-              </td>
-            </tr>
-          </table>
-          <div style="margin-top:16px;font-size:12.5px;color:var(--mute);border-top:1px solid #d8dde6;padding-top:11px;">
-            <strong style="color:var(--navy);">Next:</strong> extend to Primary, then full automation, the timetabler drops updated docs in a folder and everything else flows on its own.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 7 — DATA PITFALLS ===== -->
-  <section class="slide content-slide" data-slide="7" aria-label="Data quality">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">03</span> A problem worth fixing</span>
-      <h2 class="slide-title reveal d2">Automating cover <em>exposed a data problem</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <p class="body-text reveal d3">To put cover on the right calendars, every teacher record had to be correct. It wasn't.</p>
-      <div class="stat-grid">
-        <div class="stat-tile reveal d3"><span class="stat-num">~3,000 <em>vs</em> ~400</span><span class="stat-label">"active" directory accounts versus real cover-eligible staff</span></div>
-        <div class="stat-tile reveal d4"><span class="stat-num">47</span><span class="stat-label">records carrying someone else's email address</span></div>
-        <div class="stat-tile reveal d4"><span class="stat-num">67</span><span class="stat-label">staff rows with no surname recorded</span></div>
-        <div class="stat-tile reveal d5"><span class="stat-num">0</span><span class="stat-label">reconciliation between HR, timetabling and IT</span></div>
-      </div>
-      <p class="body-text reveal d6" style="margin-top:var(--gap-sm);">Durable fixes are being routed back to source with Pic, Boyd and IT. <strong>The data, not just the automation, is the win.</strong></p>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 8 — FEEDBACK APP ===== -->
-  <section class="slide content-slide" data-slide="8" aria-label="Feedback App">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">04</span> The Feedback App</span>
-      <h2 class="slide-title reveal d2">The teacher's feedback, <em>not a generic AI's</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="slide-3-grid">
-        <div class="slide-3-text">
-          <p class="body-text reveal d3">Tools like Brisk and Chalkie auto-write student feedback. Parents want the <strong>teacher's own expertise</strong>, and unchecked AI errors slip through to children.</p>
-          <p class="body-text reveal d4">This app keeps the teacher as the author: they record real feedback in their own voice, screen or video, stored so students can <strong>replay it anytime, until they understand</strong>.</p>
-          <p class="body-text reveal d5" style="color:var(--accent-deep);font-weight:700;">Dave and I rank this our top priority after the dashboard and reports.</p>
-        </div>
-        <div class="comp-wrap reveal-scale d4">
-          <!-- LIFTED: Feedback App REC panel (real purple glass look) -->
-          <div style="--navy:#4b1c76; --accent:#F97316; --ink:#ffffff; --bg:#633987; --soft:rgba(255,255,255,.10); --mute:rgba(255,255,255,.65);
-                      font-family:'Manrope',system-ui,sans-serif;
-                      background:linear-gradient(135deg,var(--navy),var(--bg));
-                      padding:26px; display:flex; justify-content:center; border-radius:18px;">
-            <div style="width:320px; padding:20px; border-radius:22px; background:var(--soft); border:1px solid rgba(255,255,255,.2); backdrop-filter:blur(18px); box-shadow:0 12px 30px rgba(0,0,0,.25);">
-              <div style="text-align:center; padding:6px 0 14px;">
-                <span style="color:var(--ink); font-weight:800; letter-spacing:.05em; opacity:.9;">THE </span>
-                <span style="color:var(--ink); font-weight:800; letter-spacing:.05em; text-shadow:0 0 8px rgba(100,210,255,.7);">FEEDBACK APP</span>
-              </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 11px; margin-bottom:16px; border-radius:8px; background:rgba(34,134,58,.22); border:1px solid rgba(74,222,128,.35);">
-                <span style="color:var(--ink); font-size:12px;">Selected: <b>Abdulaziz Alshamsi</b></span>
-                <span style="color:var(--mute); cursor:pointer; font-size:15px;">&times;</span>
-              </div>
-              <div style="display:flex; flex-direction:column; align-items:center; gap:12px;">
-                <div style="width:88px; height:88px; border-radius:50%; background:#e11d2a; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 0 rgba(225,29,42,.6); animation:recpulse 1.6s infinite;">
-                  <div style="width:28px; height:28px; border-radius:6px; background:#fff;"></div>
-                </div>
-                <div style="color:#ff8a8a; font-weight:700; font-size:16px;">Recording in progress…</div>
-                <div style="color:var(--mute); font-size:24px; font-variant-numeric:tabular-nums; letter-spacing:2px;">00:42</div>
-                <p style="color:var(--mute); font-size:11px; text-align:center; margin:4px 0 0; line-height:1.4;">Screen + voice captured · auto-saves to the Student Feedback Hub for students to replay anytime</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 9 — ATTENDANCE APP ===== -->
-  <section class="slide content-slide" data-slide="9" aria-label="Attendance App">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">04</span> The Attendance App</span>
-      <h2 class="slide-title reveal d2">Attendance at a glance, <em>emails that write themselves</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="slide-3-grid">
-        <div class="slide-3-text">
-          <p class="body-text reveal d3">Admins see attendance from school level down to each student, ask questions in plain English, and get parent emails drafted automatically.</p>
-          <ul class="bullet-list">
-            <li class="reveal d4"><strong>Backend</strong> moving to Leon's Main Database.</li>
-            <li class="reveal d4"><strong>Restyle</strong> to match the dashboard house style.</li>
-            <li class="reveal d5"><strong>Email automation</strong> to retire the $20/month tool, Grade 1 first.</li>
-          </ul>
-        </div>
-        <div class="comp-wrap reveal-scale d4">
-          <!-- LIFTED: Attendance StatCard + ProgressRing (real glass look) -->
-          <div style="--accent:#22d3ee; --mute:#94a3b8;
-                      display:inline-flex; gap:20px; align-items:center;
-                      background:linear-gradient(135deg,#3a206e,#211a47);
-                      border:1px solid rgba(124,108,212,.5); border-radius:18px;
-                      padding:24px 28px; font-family:'Manrope',system-ui,sans-serif;
-                      color:#f1f5f9; box-shadow:0 14px 36px rgba(0,0,0,.4);">
-            <div style="position:relative; width:112px; height:112px;">
-              <svg width="112" height="112" viewBox="0 0 112 112" style="transform:rotate(-90deg);">
-                <circle cx="56" cy="56" r="48" fill="none" stroke="rgba(148,163,184,.22)" stroke-width="10"/>
-                <circle cx="56" cy="56" r="48" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="18.1" style="filter:drop-shadow(0 0 6px rgba(34,211,238,.5));"/>
-              </svg>
-              <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
-                <span style="font-size:31px; font-weight:800; letter-spacing:-.5px;">94<span style="font-size:16px;">%</span></span>
-              </div>
-            </div>
-            <div style="min-width:150px;">
-              <p style="margin:0 0 4px; font-size:12px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px;">Attendance Rate</p>
-              <p style="margin:0; font-size:40px; font-weight:800; line-height:1;">94%</p>
-              <p style="margin:8px 0 0; font-size:12px; font-weight:700; color:#34d399;">&#9650; 2.1% vs last term · This Year</p>
-              <span style="display:inline-block; margin-top:10px; padding:3px 10px; border-radius:999px; background:rgba(34,211,238,.15); color:var(--accent); font-size:11px; font-weight:700;">Secondary · All Grades</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 10 — LESSON & SLIDE AI ===== -->
-  <section class="slide content-slide" data-slide="10" aria-label="Lesson and Slide AI">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">05</span> Lesson &amp; Slide AI</span>
-      <h2 class="slide-title reveal d2">Our teaching craft, <em>turned into ready-to-teach lessons</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="slide-3-grid">
-        <div class="slide-3-text">
-          <p class="body-text reveal d3">The system reads the materials the Learning &amp; Teaching team built over years, the <strong>63 TLAC techniques</strong> we adopted, our lesson elements, <strong>ACARA cognitive verbs</strong> and vertical alignment, drafts a full lesson plan, waits for the teacher to <strong>approve it</strong>, then generates the actual deck.</p>
-          <p class="body-text reveal d4"><strong>Nine lessons</strong> are already live in classrooms.</p>
-          <a class="demo-btn reveal d5" href="https://rogerceaser21.github.io/ai-job-fair-build-stand-y5y6/" target="_blank" rel="noopener">▶ Open a live lesson</a>
-        </div>
-        <div class="comp-wrap reveal-scale d4">
-          <img src="assets/pipeline-c.png" alt="Lesson and slide generation pipeline" class="slide-img">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 11 — GRAPHIFY / INTERCONNECTEDNESS ===== -->
-  <section class="slide content-slide" data-slide="11" aria-label="One ecosystem">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">06</span> One ecosystem</span>
-      <h2 class="slide-title reveal d2">It's not six projects. <em>It's one system.</em></h2>
-      <div class="accent-bar reveal d3"></div>
-      <p class="body-text reveal d3">Every workstream shares the same foundations, so they connect into a single school platform rather than isolated tools.</p>
-      <div class="graph-wrap reveal-scale d4">
-        <svg viewBox="0 0 1000 560" role="img" aria-label="Network of AIS systems sharing common infrastructure">
-          <defs>
-            <radialGradient id="hubg" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#1257ff"/><stop offset="100%" stop-color="#14233f"/>
-            </radialGradient>
-          </defs>
-          <!-- edges hub -> systems -->
-          <g stroke="#1257ff" stroke-opacity="0.35" stroke-width="2">
-            <line x1="500" y1="280" x2="210" y2="120"/>
-            <line x1="500" y1="280" x2="500" y2="95"/>
-            <line x1="500" y1="280" x2="790" y2="120"/>
-            <line x1="500" y1="280" x2="210" y2="440"/>
-            <line x1="500" y1="280" x2="500" y2="465"/>
-            <line x1="500" y1="280" x2="790" y2="440"/>
-          </g>
-          <!-- cross links -->
-          <g stroke="#ffba14" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="5 5">
-            <line x1="500" y1="465" x2="210" y2="120"/>
-            <line x1="790" y1="440" x2="500" y2="95"/>
-            <line x1="210" y1="440" x2="210" y2="120"/>
-          </g>
-          <!-- hub -->
-          <circle cx="500" cy="280" r="64" fill="url(#hubg)"/>
-          <text x="500" y="274" text-anchor="middle" class="gnode-label" fill="#fff" font-size="17">One school</text>
-          <text x="500" y="296" text-anchor="middle" class="gnode-label" fill="#fff" font-size="17">platform</text>
-          <!-- system nodes -->
-          <g>
-            <circle cx="210" cy="120" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="210" y="115" text-anchor="middle" class="gnode-label" font-size="14">R3</text>
-            <text x="210" y="133" text-anchor="middle" class="gnode-sub" font-size="11">Observations</text>
-          </g>
-          <g>
-            <circle cx="500" cy="95" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="500" y="90" text-anchor="middle" class="gnode-label" font-size="14">Academic</text>
-            <text x="500" y="108" text-anchor="middle" class="gnode-sub" font-size="11">Reports</text>
-          </g>
-          <g>
-            <circle cx="790" cy="120" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="790" y="115" text-anchor="middle" class="gnode-label" font-size="14">IRL / TRS</text>
-            <text x="790" y="133" text-anchor="middle" class="gnode-sub" font-size="11">Automation</text>
-          </g>
-          <g>
-            <circle cx="210" cy="440" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="210" y="435" text-anchor="middle" class="gnode-label" font-size="14">Lesson</text>
-            <text x="210" y="453" text-anchor="middle" class="gnode-sub" font-size="11">&amp; Slide AI</text>
-          </g>
-          <g>
-            <circle cx="500" cy="465" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="500" y="460" text-anchor="middle" class="gnode-label" font-size="14">Attendance</text>
-            <text x="500" y="478" text-anchor="middle" class="gnode-sub" font-size="11">App</text>
-          </g>
-          <g>
-            <circle cx="790" cy="440" r="58" fill="#fff" stroke="#1257ff" stroke-width="2.5"/>
-            <text x="790" y="435" text-anchor="middle" class="gnode-label" font-size="14">Feedback</text>
-            <text x="790" y="453" text-anchor="middle" class="gnode-sub" font-size="11">App</text>
-          </g>
-          <!-- infra strip -->
-          <text x="500" y="535" text-anchor="middle" class="ginfra" font-size="13">Shared foundations:  Supabase  ·  Google Workspace  ·  Gemini &amp; Claude  ·  GitHub Pages</text>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 12 — THE ASK ===== -->
-  <section class="slide content-slide" data-slide="12" aria-label="The Ask">
-    <div class="content-card">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo">
-      <span class="eyebrow reveal d1"><span class="num">07</span> The Ask</span>
-      <h2 class="slide-title reveal d2">Two things to <em>take this further</em>.</h2>
-      <div class="accent-bar reveal d3"></div>
-      <div class="ask-grid">
-        <div class="ask-card reveal d3">
-          <span class="ask-kicker">Ask 1 · Govern &amp; align</span>
-          <p class="ask-h">Track every workstream against clear <span style="color:var(--accent);">KPIs</span>, line-managed by Dave, Head of Learning and Teaching.</p>
-          <table class="kpi-table">
-            <tr><td class="k">R3 Observations</td><td class="v">A logged coaching next-step per teacher; SEAS movement each round</td></tr>
-            <tr><td class="k">Academic Reports</td><td class="v">Reports delivered on time; parent-login adoption; fees recovered</td></tr>
-            <tr><td class="k">IRL / TRS</td><td class="v">Cover-allocation time saved; teacher records reconciled</td></tr>
-            <tr><td class="k">Feedback App</td><td class="v">Authentic feedback items delivered; student replays</td></tr>
-            <tr><td class="k">Attendance</td><td class="v">Attendance rate up; $20/month tool retired</td></tr>
-            <tr><td class="k">Lesson AI</td><td class="v">Teacher prep-time saved; lessons live in classrooms</td></tr>
-          </table>
-        </div>
-        <div class="ask-card primary reveal d4">
-          <span class="ask-kicker">Ask 2 · Role</span>
-          <p class="role-title-big">Head of AI and Development</p>
-          <ul class="role-list">
-            <li>Owns AIS's AI strategy and internal software, end to end.</li>
-            <li>Designs, builds, deploys and maintains the stack.</li>
-            <li>Sets and reports KPIs across every workstream.</li>
-            <li>One point of accountability for data → decisions.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== SLIDE 13 — CLOSE ===== -->
-  <section class="slide qa-slide" data-slide="13" aria-label="Thank you">
-    <div class="qa-top">
-      <img src="assets/ais_header_framed.png" alt="AIS Sharjah" class="ais-logo reveal d1">
-      <h2 class="qa-main reveal d2">Thank <em>you</em>.</h2>
-    </div>
-    <div class="qa-bot">
-      <p class="qa-thanks reveal d3">Happy to walk through any system live.</p>
-      <span class="qa-meta reveal d3">AI &amp; Development at AIS · Igor Sesar · 2026</span>
-    </div>
-  </section>
-
-</div><!-- /slides-container -->
-
-<style>
-@keyframes recpulse {
-  0%   { box-shadow: 0 0 0 0 rgba(225,29,42,.55); }
-  70%  { box-shadow: 0 0 0 22px rgba(225,29,42,0); }
-  100% { box-shadow: 0 0 0 0 rgba(225,29,42,0); }
-}
-</style>
-
 <script>
-/* ===== SLIDE CONTROLLER ===== */
-class SlidePresentation {
-  constructor() {
-    this.slides = Array.from(document.querySelectorAll('.slide'));
-    this.total = this.slides.length;
-    this.current = 0;
-    this.navDotsContainer = document.getElementById('navDots');
-    this.progressFill = document.getElementById('progressFill');
-    this.slideCounter = document.getElementById('slideCounter');
-    this.initialLoad = false;
-    this.buildNavDots(); this.update(); this.bindKeyboard(); this.bindWheel(); this.bindTouch();
-  }
-  buildNavDots() {
-    this.navDotsContainer.innerHTML = '';
-    this.slides.forEach((_, i) => {
-      const btn = document.createElement('button');
-      btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
-      btn.addEventListener('click', () => this.goTo(i));
-      this.navDotsContainer.appendChild(btn);
-    });
-  }
-  goTo(i) {
-    if (i < 0 || i >= this.total || i === this.current) return;
-    this.slides[this.current].classList.remove('active');
-    this.current = i;
-    this.slides[this.current].classList.add('active');
-    this.update();
-  }
-  next() { this.goTo(this.current + 1); }
-  prev() { this.goTo(this.current - 1); }
-  update() {
-    this.progressFill.style.width = ((this.current + 1) / this.total * 100) + '%';
-    this.slideCounter.textContent = `${this.current + 1} / ${this.total}`;
-    Array.from(this.navDotsContainer.children).forEach((dot, i) => dot.classList.toggle('active', i === this.current));
-    this.reloadMarkedIframes();
-  }
-  reloadMarkedIframes() {
-    if (this.initialLoad === false) { this.initialLoad = undefined; return; }
-    const active = this.slides[this.current];
-    active.querySelectorAll('iframe[data-reload-on-show="true"]').forEach(iframe => {
-      const src = iframe.getAttribute('src');
-      iframe.setAttribute('src', 'about:blank');
-      requestAnimationFrame(() => iframe.setAttribute('src', src));
-    });
-  }
-  bindKeyboard() {
-    const NEXT = ['ArrowRight', 'ArrowDown', 'PageDown', ' '];
-    const PREV = ['ArrowLeft', 'ArrowUp', 'PageUp'];
-    document.addEventListener('keydown', (e) => {
-      if (e.target.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName)) return;
-      if (NEXT.includes(e.key)) { e.preventDefault(); this.next(); }
-      if (PREV.includes(e.key)) { e.preventDefault(); this.prev(); }
-      if (e.key === 'Home') { e.preventDefault(); this.goTo(0); }
-      if (e.key === 'End')  { e.preventDefault(); this.goTo(this.total - 1); }
-    });
-  }
-  bindWheel() {
-    let cooldown = false;
-    window.addEventListener('wheel', (e) => {
-      if (e.target.closest('.app-embed, .comp-wrap, .ask-card')) return;
-      if (cooldown) return;
-      if (Math.abs(e.deltaY) < 30) return;
-      cooldown = true; setTimeout(() => cooldown = false, 600);
-      if (e.deltaY > 0) this.next(); else this.prev();
-    }, { passive: true });
-  }
-  bindTouch() {
-    let startY = 0, startX = 0;
-    window.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; startX = e.touches[0].clientX; }, { passive: true });
-    window.addEventListener('touchend', (e) => {
-      const dy = e.changedTouches[0].clientY - startY;
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 60) { if (dy < 0) this.next(); else this.prev(); }
-      else if (Math.abs(dx) > 60) { if (dx < 0) this.next(); else this.prev(); }
-    }, { passive: true });
-  }
+class Deck{
+  constructor(){this.s=Array.from(document.querySelectorAll('.slide'));this.n=this.s.length;this.i=0;
+    this.dots=document.getElementById('dots');this.pf=document.getElementById('pfill');this.ct=document.getElementById('counter');this.first=true;
+    this.buildDots();this.update();this.keys();this.wheel();this.touch();}
+  buildDots(){this.s.forEach((_,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Slide '+(i+1));b.onclick=()=>this.go(i);this.dots.appendChild(b);});}
+  go(i){if(i<0||i>=this.n||i===this.i)return;this.s[this.i].classList.remove('active');this.i=i;this.s[this.i].classList.add('active');this.update();}
+  next(){this.go(this.i+1)}prev(){this.go(this.i-1)}
+  update(){this.pf.style.width=((this.i+1)/this.n*100)+'%';this.ct.textContent=(this.i+1)+' / '+this.n;
+    Array.from(this.dots.children).forEach((d,i)=>d.classList.toggle('active',i===this.i));this.reload();}
+  reload(){if(this.first){this.first=false;return;}const a=this.s[this.i];a.querySelectorAll('iframe[data-reload-on-show="true"]').forEach(f=>{const s=f.getAttribute('src');f.setAttribute('src','about:blank');requestAnimationFrame(()=>f.setAttribute('src',s));});}
+  keys(){const N=['ArrowRight','ArrowDown','PageDown',' '],P=['ArrowLeft','ArrowUp','PageUp'];
+    document.addEventListener('keydown',e=>{if(e.target.isContentEditable||['INPUT','TEXTAREA','IFRAME'].includes(e.target.tagName))return;
+      if(N.includes(e.key)){e.preventDefault();this.next()}if(P.includes(e.key)){e.preventDefault();this.prev()}
+      if(e.key==='Home'){e.preventDefault();this.go(0)}if(e.key==='End'){e.preventDefault();this.go(this.n-1)}});}
+  wheel(){let c=false;window.addEventListener('wheel',e=>{if(e.target.closest('.demo-left,.demo-right,.graph-slide,.ask-card,.store'))return;if(c||Math.abs(e.deltaY)<30)return;c=true;setTimeout(()=>c=false,650);if(e.deltaY>0)this.next();else this.prev();},{passive:true});}
+  touch(){let y=0,x=0;window.addEventListener('touchstart',e=>{y=e.touches[0].clientY;x=e.touches[0].clientX},{passive:true});
+    window.addEventListener('touchend',e=>{const dy=e.changedTouches[0].clientY-y,dx=e.changedTouches[0].clientX-x;
+      if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>60){dy<0?this.next():this.prev()}else if(Math.abs(dx)>60){dx<0?this.next():this.prev()}},{passive:true});}
 }
+class FS{constructor(){this.s=1;this.MIN=.6;this.MAX=1.8;this.l=document.getElementById('fsl');this.u=document.getElementById('fsu');this.d=document.getElementById('fsd');
+  this.u.onclick=()=>this.set(this.s+.1);this.d.onclick=()=>this.set(this.s-.1);
+  document.addEventListener('keydown',e=>{if(!e.metaKey)return;if(e.key==='.'){e.preventDefault();this.set(this.s+.1)}if(e.key===','){e.preventDefault();this.set(this.s-.1)}});this.ap();}
+  set(v){this.s=Math.round(Math.max(this.MIN,Math.min(this.MAX,v))*10)/10;this.ap()}
+  ap(){document.documentElement.style.setProperty('--fs',this.s);this.l.textContent=Math.round(this.s*100)+'%';this.d.disabled=this.s<=this.MIN;this.u.disabled=this.s>=this.MAX;}}
+class Full{constructor(){this.b=document.getElementById('fsf');this.b.onclick=()=>this.t();
+  document.addEventListener('keydown',e=>{if(e.metaKey&&(e.key==='f'||e.key==='F')){e.preventDefault();this.t();return}
+    if((e.key==='f'||e.key==='F')&&!e.metaKey&&!e.ctrlKey&&!e.altKey){const t=e.target;if(t.isContentEditable||['INPUT','TEXTAREA','IFRAME'].includes(t.tagName))return;e.preventDefault();this.t()}});}
+  t(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}}
+class Cursor{constructor(){this.ok=matchMedia('(hover:hover) and (pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion:reduce)').matches;if(!this.ok)return;
+  this.c=document.getElementById('cur');this.x=this.c.getContext('2d');this.rgba=a=>'rgba(184,144,47,'+a+')';this.tr=[];this.st=[];this.cur=null;this.TL=400;this.IF=1400;
+  this.rz();window.addEventListener('resize',()=>this.rz());this.bind();requestAnimationFrame(()=>this.tick());}
+  rz(){const d=window.devicePixelRatio||1;this.c.width=innerWidth*d;this.c.height=innerHeight*d;this.c.style.width=innerWidth+'px';this.c.style.height=innerHeight+'px';this.x.setTransform(1,0,0,1,0,0);this.x.scale(d,d)}
+  bind(){window.addEventListener('mousemove',e=>{this.tr.push({x:e.clientX,y:e.clientY,t:performance.now()});if(this.cur)this.cur.p.push({x:e.clientX,y:e.clientY})});
+    window.addEventListener('mousedown',e=>{if(e.button!==0)return;if(e.target.closest('button,a,[contenteditable],input,textarea,.dots,.etg,.ehz,iframe,.demo-left,.demo-right,.graph-slide'))return;this.cur={p:[{x:e.clientX,y:e.clientY}],done:false};this.st.push(this.cur)});
+    const end=()=>{if(this.cur){this.cur.done=true;this.cur.fa=performance.now();this.cur=null}};window.addEventListener('mouseup',end);window.addEventListener('mouseleave',end);}
+  tick(){const n=performance.now(),x=this.x;x.clearRect(0,0,innerWidth,innerHeight);this.tr=this.tr.filter(p=>n-p.t<this.TL);
+    for(const p of this.tr){const a=(n-p.t)/this.TL,al=1-a,r=6*(1-a*.35);x.beginPath();x.arc(p.x,p.y,r,0,Math.PI*2);x.fillStyle=this.rgba(al*.5);x.shadowBlur=10;x.shadowColor=this.rgba(.6);x.fill()}x.shadowBlur=0;
+    for(let i=this.st.length-1;i>=0;i--){const s=this.st[i];let al=1;if(s.done){const a=n-s.fa;if(a>=this.IF){this.st.splice(i,1);continue}al=1-a/this.IF}if(s.p.length<2)continue;x.beginPath();x.moveTo(s.p[0].x,s.p[0].y);for(let j=1;j<s.p.length;j++)x.lineTo(s.p[j].x,s.p[j].y);x.strokeStyle=this.rgba(al*.85);x.lineWidth=3.5;x.lineCap='round';x.lineJoin='round';x.shadowBlur=10;x.shadowColor=this.rgba(al*.6);x.stroke()}x.shadowBlur=0;requestAnimationFrame(()=>this.tick())}}
+class Editor{constructor(){this.on=false;this.tg=document.getElementById('etg');this.bn=document.getElementById('eban');this.hz=document.querySelector('.ehz');
+  this.sel='h1,h2,h3,p,li,.it,.sub,.benefit,.ti,.t-sub,.body,.metric span,.demo-ti,.close-sub';
+  this.tg.onclick=()=>this.t();this.hz.onclick=()=>this.t();let h;this.hz.onmouseenter=()=>{clearTimeout(h);this.tg.classList.add('show')};this.hz.onmouseleave=()=>{h=setTimeout(()=>{if(!this.on)this.tg.classList.remove('show')},400)};this.tg.onmouseenter=()=>clearTimeout(h);this.tg.onmouseleave=()=>{h=setTimeout(()=>{if(!this.on)this.tg.classList.remove('show')},400)};
+  document.addEventListener('keydown',e=>{if((e.key==='e'||e.key==='E')&&!e.metaKey&&!e.ctrlKey&&!e.altKey){const t=e.target;if(t.isContentEditable||['INPUT','TEXTAREA','IFRAME'].includes(t.tagName))return;this.t()}if((e.metaKey||e.ctrlKey)&&e.key==='s'){e.preventDefault();if(this.on)this.exp()}});}
+  t(){this.on=!this.on;document.body.classList.toggle('edit',this.on);this.tg.classList.toggle('active',this.on);this.bn.classList.toggle('active',this.on);this.tg.textContent=this.on?'✓':'✎';
+    document.querySelectorAll(this.sel).forEach(el=>{this.on?el.setAttribute('contenteditable','true'):el.removeAttribute('contenteditable')});}
+  exp(){const ed=Array.from(document.querySelectorAll('[contenteditable]'));ed.forEach(el=>el.removeAttribute('contenteditable'));document.body.classList.remove('edit');this.tg.classList.remove('active','show');this.bn.classList.remove('active');
+    const h='<!DOCTYPE html>\n'+document.documentElement.outerHTML;document.body.classList.add('edit');ed.forEach(el=>el.setAttribute('contenteditable','true'));this.tg.classList.add('active');this.bn.classList.add('active');
+    const b=new Blob([h],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='AIS AI Development Briefing.html';a.click();URL.revokeObjectURL(a.href);}}
 
-/* ===== FONT SCALE ===== */
-class FontScaleController {
-  constructor() {
-    this.STEP = 0.1; this.MIN = 0.5; this.MAX = 2.0;
-    this.scale = parseFloat(localStorage.getItem('ais_fontScale') || '1') || 1;
-    this.labelEl = document.getElementById('fontScaleLabel');
-    this.btnUp = document.getElementById('fontScaleUp');
-    this.btnDown = document.getElementById('fontScaleDown');
-    this.btnUp.addEventListener('click', () => this.increase());
-    this.btnDown.addEventListener('click', () => this.decrease());
-    document.addEventListener('keydown', (e) => {
-      if (!e.metaKey) return;
-      if (e.key === '.') { e.preventDefault(); this.increase(); }
-      if (e.key === ',') { e.preventDefault(); this.decrease(); }
-    });
-    this.apply();
-  }
-  increase() { this.setScale(this.scale + this.STEP); }
-  decrease() { this.setScale(this.scale - this.STEP); }
-  setScale(v) { this.scale = Math.round(Math.max(this.MIN, Math.min(this.MAX, v)) * 10) / 10; this.apply(); localStorage.setItem('ais_fontScale', this.scale); }
-  apply() {
-    document.documentElement.style.setProperty('--font-scale', this.scale);
-    this.labelEl.textContent = Math.round(this.scale * 100) + '%';
-    this.btnDown.disabled = this.scale <= this.MIN;
-    this.btnUp.disabled = this.scale >= this.MAX;
-    document.body.classList.toggle('scaled-up', this.scale > 1.2);
-  }
-}
-
-/* ===== FULLSCREEN ===== */
-class FullscreenController {
-  constructor() {
-    this.btn = document.getElementById('fullscreenBtn');
-    this.btn.addEventListener('click', () => this.toggle());
-    document.addEventListener('keydown', (e) => {
-      if (e.metaKey && (e.key === 'f' || e.key === 'F')) { e.preventDefault(); this.toggle(); return; }
-      if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        const t = e.target;
-        if (t.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(t.tagName)) return;
-        e.preventDefault(); this.toggle();
-      }
-    });
-    document.addEventListener('fullscreenchange', () => this.syncLabel());
-  }
-  toggle() { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); }
-  syncLabel() {
-    const isFs = !!document.fullscreenElement;
-    this.btn.setAttribute('aria-label', isFs ? 'Exit fullscreen' : 'Enter fullscreen');
-    this.btn.setAttribute('title', isFs ? 'Exit fullscreen (⌘ F / Esc)' : 'Fullscreen (⌘ F)');
-  }
-}
-
-/* ===== CURSOR FX (AIS blue) ===== */
-class CursorEffects {
-  constructor() {
-    this.canDo = matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!this.canDo) return;
-    this.canvas = document.getElementById('cursorFx');
-    this.ctx = this.canvas.getContext('2d');
-    this.accentRgba = (a) => `rgba(18, 87, 255, ${a})`;
-    this.trail = []; this.strokes = []; this.current = null;
-    this.TRAIL_LIFE = 400; this.INK_FADE = 1500;
-    this.resize(); window.addEventListener('resize', () => this.resize());
-    this.bindEvents(); requestAnimationFrame(() => this.tick());
-  }
-  resize() {
-    const dpr = window.devicePixelRatio || 1;
-    this.canvas.width = innerWidth * dpr; this.canvas.height = innerHeight * dpr;
-    this.canvas.style.width = innerWidth + 'px'; this.canvas.style.height = innerHeight + 'px';
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0); this.ctx.scale(dpr, dpr);
-  }
-  bindEvents() {
-    window.addEventListener('mousemove', (e) => {
-      this.trail.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-      if (this.current) this.current.points.push({ x: e.clientX, y: e.clientY });
-    });
-    window.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      if (e.target.closest('button, a, [contenteditable], input, textarea, .nav-dots, .edit-toggle, .edit-hotzone, iframe, .app-embed, .comp-wrap')) return;
-      this.current = { points: [{ x: e.clientX, y: e.clientY }], done: false };
-      this.strokes.push(this.current);
-    });
-    const endStroke = () => { if (this.current) { this.current.done = true; this.current.finishedAt = performance.now(); this.current = null; } };
-    window.addEventListener('mouseup', endStroke); window.addEventListener('mouseleave', endStroke);
-  }
-  tick() {
-    const now = performance.now(); const ctx = this.ctx;
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-    this.trail = this.trail.filter(p => now - p.t < this.TRAIL_LIFE);
-    for (const p of this.trail) {
-      const age = (now - p.t) / this.TRAIL_LIFE; const alpha = 1 - age; const r = 7 * (1 - age * 0.35);
-      ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = this.accentRgba(alpha * 0.6); ctx.shadowBlur = 12; ctx.shadowColor = this.accentRgba(0.8); ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-    for (let i = this.strokes.length - 1; i >= 0; i--) {
-      const s = this.strokes[i]; let alpha = 1;
-      if (s.done) { const age = now - s.finishedAt; if (age >= this.INK_FADE) { this.strokes.splice(i, 1); continue; } alpha = 1 - age / this.INK_FADE; }
-      if (s.points.length < 2) continue;
-      ctx.beginPath(); ctx.moveTo(s.points[0].x, s.points[0].y);
-      for (let j = 1; j < s.points.length; j++) ctx.lineTo(s.points[j].x, s.points[j].y);
-      ctx.strokeStyle = this.accentRgba(alpha); ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.shadowBlur = 12; ctx.shadowColor = this.accentRgba(alpha * 0.7); ctx.stroke();
-    }
-    ctx.shadowBlur = 0; requestAnimationFrame(() => this.tick());
-  }
-}
-
-/* ===== INLINE EDITOR ===== */
-class InlineEditor {
-  constructor() {
-    this.isActive = false;
-    this.toggle = document.getElementById('editToggle');
-    this.banner = document.getElementById('editBanner');
-    this.hotzone = document.querySelector('.edit-hotzone');
-    this.selector = 'h1, h2, h3, p, li, span.ov-title, span.ov-sub, span.ov-num, .mchip, .emphasis, .body-text, .title-sub, .title-tagline, .qa-thanks, .stat-num, .stat-label, .ask-h, .ask-kicker, .role-title-big, .kpi-table td';
-    this.toggle.addEventListener('click', () => this.toggleMode());
-    this.hotzone.addEventListener('click', () => this.toggleMode());
-    let hideT = null;
-    this.hotzone.addEventListener('mouseenter', () => { clearTimeout(hideT); this.toggle.classList.add('show'); });
-    this.hotzone.addEventListener('mouseleave', () => { hideT = setTimeout(() => { if (!this.isActive) this.toggle.classList.remove('show'); }, 400); });
-    this.toggle.addEventListener('mouseenter', () => clearTimeout(hideT));
-    this.toggle.addEventListener('mouseleave', () => { hideT = setTimeout(() => { if (!this.isActive) this.toggle.classList.remove('show'); }, 400); });
-    document.addEventListener('keydown', (e) => {
-      if ((e.key === 'e' || e.key === 'E') && !e.metaKey && !e.ctrlKey && !e.altKey) {
-        const t = e.target;
-        if (t.isContentEditable || ['INPUT','TEXTAREA','IFRAME'].includes(t.tagName)) return;
-        this.toggleMode();
-      }
-      if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); if (this.isActive) this.exportFile(); }
-    });
-  }
-  toggleMode() {
-    this.isActive = !this.isActive;
-    document.body.classList.toggle('edit-active', this.isActive);
-    this.toggle.classList.toggle('active', this.isActive);
-    this.banner.classList.toggle('active', this.isActive);
-    this.toggle.textContent = this.isActive ? '✓' : '✏️';
-    document.querySelectorAll(this.selector).forEach(el => {
-      if (this.isActive) el.setAttribute('contenteditable', 'true'); else el.removeAttribute('contenteditable');
-    });
-  }
-  exportFile() {
-    const editable = Array.from(document.querySelectorAll('[contenteditable]'));
-    editable.forEach(el => el.removeAttribute('contenteditable'));
-    document.body.classList.remove('edit-active');
-    this.toggle.classList.remove('active', 'show'); this.banner.classList.remove('active');
-    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-    document.body.classList.add('edit-active');
-    editable.forEach(el => el.setAttribute('contenteditable', 'true'));
-    this.toggle.classList.add('active'); this.banner.classList.add('active');
-    const blob = new Blob([html], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = 'AIS AI Development Briefing.html'; a.click();
-    URL.revokeObjectURL(a.href);
-  }
-}
-
-const fontScaleCtrl = new FontScaleController();
-const fullscreenCtrl = new FullscreenController();
-const cursorFx = new CursorEffects();
-const editor = new InlineEditor();
-const presentation = new SlidePresentation();
-
-/* Deep-link to a slide via #N (e.g. ...#7). Useful for presenting; also keeps URL shareable. */
-function jumpFromHash() {
-  const n = parseInt((location.hash || '').replace('#', ''), 10);
-  if (n >= 1 && n <= presentation.total) presentation.goTo(n - 1);
-}
-jumpFromHash();
-window.addEventListener('hashchange', jumpFromHash);
+new FS();new Full();new Cursor();new Editor();
+const deck=new Deck();
+document.querySelectorAll('.chk li').forEach(li=>li.addEventListener('click',()=>li.classList.toggle('done')));
+function jump(){const k=parseInt((location.hash||'').replace('#',''),10);if(k>=1&&k<=deck.n)deck.go(k-1);}jump();window.addEventListener('hashchange',jump);
 </script>
 </body>
 </html>
