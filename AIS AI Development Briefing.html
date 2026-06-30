@@ -206,9 +206,6 @@ body.edit [contenteditable]{outline:1.5px dashed rgba(184,144,47,.5);outline-off
 body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(184,144,47,.08)}
 @media(max-height:680px){:root{--t2:calc(clamp(1.2rem,3vw,2rem)*var(--fs))} .dots{display:none}}
 </style>
-<script>
-(function(){try{localStorage.clear()}catch(e){}try{Storage.prototype.getItem=function(){return null};Storage.prototype.setItem=function(){}}catch(e){}})();
-</script>
 </head>
 <body>
 <div class="pbar"><div class="pfill" id="pfill"></div></div>
@@ -302,29 +299,24 @@ body.edit [contenteditable]:focus{outline:2px solid var(--gold);background:rgba(
     </div>
   </section>
 
-  <!-- 4 R3 WHAT'S NEXT -->
-  <section class="slide content" data-slide="4">
-    <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
-    <span class="ey reveal d1"><span class="n">01</span>R3 Observations</span>
-    <h2 class="ti reveal d2">What's next for the <em>R3 Dashboard</em>.</h2>
-    <div class="rule reveal d3"></div>
-    <div class="two">
-      <ul class="next-list">
-        <li class="reveal d3"><a href="https://rogerceaser21.github.io/Data-Representation/dashboard-previews/spea-dashboard.html" target="_blank" rel="noopener" style="color:var(--gold-deep);text-decoration:none">Teacher Dashboard/Portal ↗</a><span>The 8-point per-teacher view (possible before tomorrow)</span></li>
-        <li class="reveal d3">OTP and APR lesson observations</li>
-        <li class="reveal d4">Apple Pencil notes used as AI context</li>
-        <li class="reveal d4">Role-based logins: teacher, observer, administrator</li>
-        <li class="reveal d5">Manipulate by observer, by date, by trend<span>Needs one more round of R3 observations</span></li>
+  <!-- 4 R3 WHAT'S NEXT (demo: checklist + live Teacher Dashboard) -->
+  <section class="slide demo" data-slide="4">
+    <div class="demo-left">
+      <img src="assets/ais_header_framed.png" alt="AIS" class="ais-logo">
+      <span class="ey"><span class="n">01</span>R3 Observations</span>
+      <h2 class="demo-ti">What's next for the <em>R3 Dashboard</em>.</h2>
+      <div class="chk-lab">Walk-through · tap to tick</div>
+      <ul class="chk">
+        <li><span class="box"></span><span class="it">Teacher Dashboard/Portal<span class="sub">The 8-point per-teacher view (possible before tomorrow)</span></span></li>
+        <li><span class="box"></span><span class="it">OTP and APR lesson observations</span></li>
+        <li><span class="box"></span><span class="it">Apple Pencil notes used as AI context</span></li>
+        <li><span class="box"></span><span class="it">Role-based logins: teacher, observer, administrator</span></li>
+        <li><span class="box"></span><span class="it">Manipulate by observer, by date, by trend<span class="sub">Needs one more round of R3 observations</span></span></li>
       </ul>
-      <div class="store reveal-l d4">
-        <h4>Every observation, stored three ways</h4>
-        <p>Captured once, safe in three places.</p>
-        <div class="store-row">
-          <div class="store-item"><span class="ic">✉</span><span class="tx">Emailed at the time of observation<span>An immediate, timestamped record</span></span></div>
-          <div class="store-item"><span class="ic">▦</span><span class="tx">Google Sheet<span>The working source of truth</span></span></div>
-          <div class="store-item"><span class="ic">⛁</span><span class="tx">Supabase database<span>Powers the live dashboard</span></span></div>
-        </div>
-      </div>
+    </div>
+    <div class="demo-right">
+      <iframe src="https://rogerceaser21.github.io/Data-Representation/dashboard-previews/spea-dashboard.html" title="Live Teacher Dashboard preview" allow="fullscreen" data-reload-on-show="true"></iframe>
+      <div class="demo-cap">Live · <b>Teacher Dashboard / Portal</b></div>
     </div>
   </section>
 
