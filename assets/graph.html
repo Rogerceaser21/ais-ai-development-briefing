@@ -34,7 +34,9 @@
     {id:'supa',  label:'Supabase', group:'inf'},
     {id:'gws',   label:'Google\nWorkspace', group:'inf'},
     {id:'ai',    label:'AI\n(Gemini · Claude)', group:'inf'},
-    {id:'pages', label:'GitHub\nPages', group:'inf'}
+    {id:'pages', label:'Hosting', group:'inf'},
+    {id:'email', label:'Email', group:'inf'},
+    {id:'cal',   label:'Calendars', group:'inf'}
   ]);
   var E = function(f,t,gold){return {from:f,to:t,color:{color:gold?'#cdb06a':'#d4d8e2',highlight:'#b8902f'},width:gold?2.4:1.6,dashes:!!gold};};
   var edges = new vis.DataSet([
@@ -45,7 +47,8 @@
     E('att','supa'),E('att','ai'),E('att','gws'),
     E('lesson','ai'),E('lesson','pages'),E('lesson','gws'),
     E('focus','supa'),E('focus','ai'),
-    E('att','r3',true),E('fb','acad',true),E('lesson','r3',true)
+    E('att','r3',true),E('fb','acad',true),E('lesson','r3',true),
+    E('att','email'),E('acad','email'),E('trs','cal'),E('acad','cal')
   ]);
   var net = new vis.Network(document.getElementById('net'), {nodes:nodes, edges:edges}, {
     nodes:{shape:'dot', font:{color:'#14233f', size:17, face:'Inter', multi:false, bold:{color:'#14233f'}}, borderWidth:0},
